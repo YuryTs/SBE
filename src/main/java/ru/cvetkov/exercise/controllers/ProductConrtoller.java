@@ -10,12 +10,12 @@ import ru.cvetkov.exercise.services.ProductService;
 import java.util.List;
 
 @RestController
-public class MainConrtoller {
+public class ProductConrtoller {
 
     private final ProductService productService;
 
     @Autowired
-    public MainConrtoller(ProductService productService) {
+    public ProductConrtoller(ProductService productService) {
         this.productService = productService;
     }
 
