@@ -5,6 +5,6 @@ import jakarta.persistence.Table;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.cvetkov.exercise.models.Product;
 
-public interface ProductRepository extends JpaRepository<Product, Integer> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
 }

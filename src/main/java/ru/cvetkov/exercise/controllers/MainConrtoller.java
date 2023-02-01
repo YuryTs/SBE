@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.cvetkov.exercise.models.Product;
-import ru.cvetkov.exercise.service.ProductService;
+import ru.cvetkov.exercise.services.ProductService;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class MainConrtoller {
     }
 
     @GetMapping(value = "/products/{id}")
-    public ResponseEntity<Product> read(@PathVariable(name = "id") int id){
+    public ResponseEntity<Product> read(@PathVariable(name = "id") long id){
         final Product product = productService.read(id);
 
         return product != null
@@ -45,7 +45,7 @@ public class MainConrtoller {
     }
 
     @PutMapping(value = "/products/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody Product product){
+    public ResponseEntity<?> update(@PathVariable(name = "id") long id, @RequestBody Product product){
         final boolean updated = productService.update(product, id);
 
         return updated
@@ -54,7 +54,7 @@ public class MainConrtoller {
     }
 
     @DeleteMapping(value = "/products/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") int id){
+    public ResponseEntity<?> delete(@PathVariable(name = "id") long id){
         final boolean deleted = productService.delete(id);
 
         return deleted

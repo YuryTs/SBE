@@ -1,4 +1,4 @@
-package ru.cvetkov.exercise.service;
+package ru.cvetkov.exercise.services;
 
 import ru.cvetkov.exercise.models.Product;
 
@@ -10,9 +10,10 @@ public interface ProductService {
 
     List<Product> readAll();
 
-    Product read(int id);
+    Product read(long id);
 
-    boolean update(Product product, int id);
+    boolean update(Product product, long id);
 
-    boolean delete(int id);
+    boolean delete(long id);
+
 }

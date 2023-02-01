@@ -1,15 +1,11 @@
-package ru.cvetkov.exercise.service;
+package ru.cvetkov.exercise.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.cvetkov.exercise.models.Product;
 import ru.cvetkov.exercise.repository.ProductRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -28,21 +24,21 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product read(int id) {
-        return productRepository.getOne();
+    public Product read(long id) {
+        return productRepository.getOne(id);
     }
 
     @Override
-    public boolean update(Product product, int id) {
+    public boolean update(Product product, long id) {
         if (productRepository.existsById(id)){
-            product.setId(id);
+            product.setId((long) id);
             productRepository.save(product);
         }
         return false;
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(long id) {
         if (productRepository.existsById(id))
             productRepository.deleteById(id);
             return true;
