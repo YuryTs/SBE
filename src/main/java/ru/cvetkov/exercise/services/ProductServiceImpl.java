@@ -3,7 +3,7 @@ package ru.cvetkov.exercise.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.cvetkov.exercise.models.Product;
-import ru.cvetkov.exercise.repository.ProductRepository;
+import ru.cvetkov.exercise.repository.ProductDAO;
 
 import java.util.List;
 
@@ -11,36 +11,36 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService{
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductDAO productDAO;
 
     @Override
     public void create(Product product) {
-        productRepository.save(product);
+        productDAO.save(product);
     }
 
     @Override
     public List<Product> readAll() {
-        return productRepository.findAll();
+        return productDAO.findAll();
     }
 
     @Override
     public Product read(long id) {
-        return productRepository.getOne(id);
+        return productDAO.getOne(id);
     }
 
     @Override
     public boolean update(Product product, long id) {
-        if (productRepository.existsById(id)){
+        if (productDAO.existsById(id)){
             product.setId((long) id);
-            productRepository.save(product);
+            productDAO.save(product);
         }
         return false;
     }
 
     @Override
     public boolean delete(long id) {
-        if (productRepository.existsById(id))
-            productRepository.deleteById(id);
+        if (productDAO.existsById(id))
+            productDAO.deleteById(id);
             return true;
     }
 }
