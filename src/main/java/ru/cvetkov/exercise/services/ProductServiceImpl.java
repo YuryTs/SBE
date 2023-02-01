@@ -25,13 +25,13 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product read(long id) {
-        return productDAO.getOne(id);
+        return productDAO.getReferenceById(id);
     }
 
     @Override
     public boolean update(Product product, long id) {
         if (productDAO.existsById(id)){
-            product.setId((long) id);
+            product.setId(id);
             productDAO.save(product);
         }
         return false;
