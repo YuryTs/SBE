@@ -1,21 +1,21 @@
-package ru.cvetkov.exercise.controllers;
+package ru.cvetkov.exercise.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.cvetkov.exercise.models.Product;
-import ru.cvetkov.exercise.services.ProductService;
+import ru.cvetkov.exercise.service.ProductService;
 
 import java.util.List;
 
 @RestController
-public class ProductConrtoller {
+public class ProductController {
 
     private final ProductService productService;
 
     @Autowired
-    public ProductConrtoller(ProductService productService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
@@ -26,8 +26,8 @@ public class ProductConrtoller {
     }
 
     @GetMapping(value = "/products")
-    public ResponseEntity<List<Product>> read(){
-        final List<Product> products = productService.readAll();
+    public ResponseEntity<List<Product>> getAll(){
+        final List<Product> products = productService.getAll();
 
         return products != null && !products.isEmpty()
                 ? new ResponseEntity<>(products, HttpStatus.OK)
@@ -35,8 +35,8 @@ public class ProductConrtoller {
     }
 
     @GetMapping(value = "/products/{id}")
-    public ResponseEntity<Product> read(@PathVariable(name = "id") long id){
-        final Product product = productService.read(id);
+    public ResponseEntity<Product> get(@PathVariable(name = "id") long id){
+        final Product product = productService.get(id);
 
         return product != null
                 ? new ResponseEntity<>(product, HttpStatus.OK)

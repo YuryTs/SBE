@@ -1,4 +1,4 @@
-package ru.cvetkov.exercise.services;
+package ru.cvetkov.exercise.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +19,12 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Product> readAll() {
+    public List<Product> getAll() {
         return productDAO.findAll();
     }
 
     @Override
-    public Product read(long id) {
+    public Product get(long id) {
         return productDAO.getReferenceById(id);
     }
 
@@ -39,8 +39,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public boolean delete(long id) {
-        if (productDAO.existsById(id))
+        if (productDAO.existsById(id)) {
             productDAO.deleteById(id);
+        }
             return true;
     }
 }

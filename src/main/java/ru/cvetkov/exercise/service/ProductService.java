@@ -1,4 +1,4 @@
-package ru.cvetkov.exercise.services;
+package ru.cvetkov.exercise.service;
 
 import ru.cvetkov.exercise.models.Product;
 
@@ -8,9 +8,9 @@ public interface ProductService {
 
     void create (Product product);
 
-    List<Product> readAll();
+    List<Product> getAll();
 
-    Product read(long id);
+    Product get(long id);
 
     boolean update(Product product, long id);
 
