@@ -34,6 +34,7 @@ public class ProductServiceImpl implements ProductService{
         if (productDAO.existsById(id)){
             product.setId(id);
             productDAO.save(product);
+            return true;
         }
         return false;
     }
@@ -42,7 +43,8 @@ public class ProductServiceImpl implements ProductService{
     public boolean delete(long id) {
         if (productDAO.existsById(id)) {
             productDAO.deleteById(id);
-        }
             return true;
+        }
+        return false;
     }
 }

@@ -27,15 +27,15 @@ public class Price {
 
 
     public Double getPrice() {
-        return price;
+        return this.price;
     }
 
     public Date getDate() {
-        return date;
+        return this.date;
     }
 
     public Long getProductId() {
-        return productId;
+        return this.productId;
     }
 
 }
