@@ -4,8 +4,8 @@ package ru.cvetkov.exercise.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table
-public class Products {
+@Table(name = "Products")
+public class Product {
 
     @Id
     @Column(name = "id")

@@ -1,18 +1,18 @@
 package ru.cvetkov.exercise.service;
 
-import ru.cvetkov.exercise.models.Products;
+import ru.cvetkov.exercise.models.Product;
 
 import java.util.List;
 
 public interface ProductService {
 
-    void create (Products product);
+    void create (Product product);
 
-    List<Products> getAll();
+    List<Product> getAll();
 
-    Products get(long id);
+    Product get(long id);
 
-    boolean update(Products product, long id);
+    boolean update(Product product, long id);
 
     boolean delete(long id);
 

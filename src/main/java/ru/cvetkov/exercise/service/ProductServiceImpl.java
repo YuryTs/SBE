@@ -2,7 +2,7 @@ package ru.cvetkov.exercise.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.cvetkov.exercise.models.Products;
+import ru.cvetkov.exercise.models.Product;
 import ru.cvetkov.exercise.repository.ProductDAO;
 
 import java.util.List;
@@ -14,22 +14,22 @@ public class ProductServiceImpl implements ProductService{
     private ProductDAO productDAO;
 
     @Override
-    public void create(Products product) {
+    public void create(Product product) {
         productDAO.save(product);
     }
 
     @Override
-    public List<Products> getAll() {
+    public List<Product> getAll() {
         return productDAO.findAll();
     }
 
     @Override
-    public Products get(long id) {
+    public Product get(long id) {
         return productDAO.getReferenceById(id);
     }
 
     @Override
-    public boolean update(Products product, long id) {
+    public boolean update(Product product, long id) {
         if (productDAO.existsById(id)){
             product.setId(id);
             productDAO.save(product);
