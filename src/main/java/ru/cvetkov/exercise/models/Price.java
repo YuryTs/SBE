@@ -13,7 +13,7 @@
 ////@Getter
 ////@Setter
 ////@ToString
-//public class PriceOfProduct {
+//public class Price {
 //
 //    private Products product;
 //
