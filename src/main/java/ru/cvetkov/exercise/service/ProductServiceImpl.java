@@ -6,6 +6,7 @@ import ru.cvetkov.exercise.models.Product;
 import ru.cvetkov.exercise.repository.ProductDAO;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -24,7 +25,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product get(long id) {
+    public Product getById(long id) {
         return productDAO.getReferenceById(id);
     }
 

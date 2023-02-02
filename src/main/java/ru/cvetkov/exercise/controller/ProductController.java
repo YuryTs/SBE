@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.cvetkov.exercise.models.Price;
 import ru.cvetkov.exercise.models.Product;
 import ru.cvetkov.exercise.service.PriceService;
 import ru.cvetkov.exercise.service.ProductService;
@@ -14,7 +15,6 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@Log
 public class ProductController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class ProductController {
     PriceService priceService;
 
     @PostMapping(value = "/products")
-    public ResponseEntity<?> create(@RequestBody Product product){
+    public ResponseEntity<?> create(@RequestBody Product product) {
         productService.create(product);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -38,10 +38,18 @@ public class ProductController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/products/{id}")
-    public ResponseEntity<Product> get(@PathVariable(name = "id") long id) {
-        final Product product = productService.get(id);
-//        log.info("товар по Id : " + product);
+    @GetMapping(value = "/prices")
+    public ResponseEntity<List<Price>> getPrices() {
+        final List<Price> price = priceService.getAll();
+        log.info("Создание списка цен");
+        return price != null && !price.isEmpty()
+                ? new ResponseEntity<>(price, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(value = "/products/id={id}")
+    public ResponseEntity getProductById(@PathVariable long id) {
+        Product product = productService.getById(id);
         return product != null
                 ? new ResponseEntity<>(product, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -49,7 +57,7 @@ public class ProductController {
     }
 
     @PutMapping(value = "/products/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") long id, @RequestBody Product product){
+    public ResponseEntity<?> update(@PathVariable(name = "id") long id, @RequestBody Product product) {
         final boolean updated = productService.update(product, id);
 
         return updated
@@ -58,7 +66,7 @@ public class ProductController {
     }
 
     @DeleteMapping(value = "/products/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") long id){
+    public ResponseEntity<?> delete(@PathVariable(name = "id") long id) {
         final boolean deleted = productService.delete(id);
 
         return deleted

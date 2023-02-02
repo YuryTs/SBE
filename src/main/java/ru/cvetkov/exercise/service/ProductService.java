@@ -3,6 +3,7 @@ package ru.cvetkov.exercise.service;
 import ru.cvetkov.exercise.models.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
 
@@ -10,7 +11,7 @@ public interface ProductService {
 
     List<Product> getAll();
 
-    Product get(long id);
+    Product getById(long id);
 
     boolean update(Product product, long id);
 
