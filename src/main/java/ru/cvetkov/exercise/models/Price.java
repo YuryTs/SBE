@@ -15,7 +15,7 @@
 ////@ToString
 //public class PriceOfProduct {
 //
-//    private Product product;
+//    private Products product;
 //
 //    @Id
 //    @Column(name = "id")
@@ -33,11 +33,11 @@
 //
 //
 //
-//    public Product getProduct() {
+//    public Products getProduct() {
 //        return product;
 //    }
 //
-//    public void setProduct(Product product) {
+//    public void setProduct(Products product) {
 //        this.product = product;
 //    }
 //
