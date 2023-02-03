@@ -30,8 +30,10 @@ public class ProductController {
     @GetMapping()
     public ResponseEntity<List<Product>> getAll() {
         final List<Product> products = productService.getAll();
-        log.warn("пример создания лога");
-        log.info("пример создания лога");
+        if (products.isEmpty()) {
+            log.warn("The Lists of products is empty");
+        }
+        log.info("Список товаров состоит из: " + products.size() + " шт.");
         return !CollectionUtils.isEmpty(products)
                 ? new ResponseEntity<>(products, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
