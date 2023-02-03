@@ -8,7 +8,7 @@ import java.util.Date;
 //@Setter
 //@ToString
 @Entity
-@Table(name = "Prices")
+@Table(name = "prices")
 public class Price {
 
     @Id

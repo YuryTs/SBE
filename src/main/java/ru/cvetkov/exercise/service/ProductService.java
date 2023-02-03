@@ -11,10 +11,13 @@ public interface ProductService {
 
     List<Product> getAll();
 
-    Product getById(long id);
+    Optional<Product> getById(long id);
 
     boolean update(Product product, long id);
 
     boolean delete(long id);
+
+    Product saveOrUpdate(Product product);
+
 
 }

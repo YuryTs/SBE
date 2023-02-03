@@ -25,8 +25,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product getById(long id) {
-        return productDAO.getReferenceById(id);
+    public Optional<Product> getById(long id) {
+        return productDAO.findById(id);
     }
 
     @Override
@@ -39,6 +39,7 @@ public class ProductServiceImpl implements ProductService{
         return false;
     }
 
+
     @Override
     public boolean delete(long id) {
         if (productDAO.existsById(id)) {
@@ -46,5 +47,10 @@ public class ProductServiceImpl implements ProductService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Product saveOrUpdate(Product product){
+        return productDAO.save(product);
     }
 }

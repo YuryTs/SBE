@@ -1,9 +1,9 @@
-INSERT INTO Products
+INSERT INTO products
 VALUES (1, 'nokia3310'),
        (2, 'iPhone'),
        (3, 'Mi');
 
-INSERT INTO Prices
+INSERT INTO prices
 VALUES (1, 2500, '2020-02-01', 1),
        (2, 1750, '2022-10-23', 1),
        (3, 2900, '2021-09-19', 1),
