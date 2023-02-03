@@ -13,6 +13,7 @@ import ru.cvetkov.exercise.service.PriceService;
 import ru.cvetkov.exercise.service.ProductService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -44,11 +45,12 @@ public class ProductController {
 
 
     @GetMapping(value = "/products/id={id}")
-    public ResponseEntity<Product> getProductById(@PathVariable long id) {
+    public Optional<Product> getProductById(@PathVariable long id) {
         Product product = productService.getById(id);
-        return product != null
-                ? new ResponseEntity<>(product, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return Optional.ofNullable(product);
+//                != null
+//                ? new ResponseEntity<Product>(product, HttpStatus.OK)
+//                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 
