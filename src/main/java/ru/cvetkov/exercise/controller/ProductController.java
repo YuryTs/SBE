@@ -1,5 +1,6 @@
 package ru.cvetkov.exercise.controller;
 
+import jakarta.websocket.server.ServerEndpoint;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/products")
 @Slf4j
 public class ProductController {
 
@@ -25,7 +27,7 @@ public class ProductController {
     @Autowired
     PriceService priceService;
 
-    @GetMapping(value = "/products")
+    @GetMapping()
     public ResponseEntity<List<Product>> getAll() {
         final List<Product> products = productService.getAll();
         log.warn("пример создания лога");
@@ -35,24 +37,24 @@ public class ProductController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/prices")
-    public ResponseEntity<List<Price>> getPrices() {
-        final List<Price> price = priceService.getAll();
-        return !CollectionUtils.isEmpty(price)
-                ? new ResponseEntity<>(price, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+//    @GetMapping()
+//    public ResponseEntity<List<Price>> getPrices() {
+//        final List<Price> price = priceService.getAll();
+//        return !CollectionUtils.isEmpty(price)
+//                ? new ResponseEntity<>(price, HttpStatus.OK)
+//                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//    }
 
 
-    @GetMapping(value = "/products/id={id}")
-    public Optional<Product> getProductById(@PathVariable long id) {
-        Product product = productService.getById(id);
-        return Optional.ofNullable(product);
+//    @GetMapping(value = "/id={id}")
+//    public Optional<Product> getProductById(@PathVariable long id) {
+//        Product product = productService.getById(id);
+//        return Optional.ofNullable(product);
 //                != null
 //                ? new ResponseEntity<Product>(product, HttpStatus.OK)
 //                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-    }
+//    }
 
 
 //    @DeleteMapping(value = "/products/{id}")

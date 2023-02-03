@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "зroducts")
+@Table(name = "Products")
 public class Product {
 
     @Id
@@ -18,9 +18,9 @@ public class Product {
     @Column(name = "name")
     private String name;
 
-    @OneToMany
-    @JoinColumn(name = "product_id")
-    private List<Price> prices = new ArrayList<>();
+//    @OneToMany
+//    @JoinColumn(name = "product_id")
+//    private List<Price> prices = new ArrayList<>();
 
 
     public Long getId() {
