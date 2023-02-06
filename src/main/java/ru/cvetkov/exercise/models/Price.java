@@ -27,10 +27,6 @@ public class Price {
     @Column(name = "products_id")
     private Long productId;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "products_id")
-//    private Product product;
-
     public Price(){};
 
     public Double getPrice() {
@@ -64,13 +60,5 @@ public class Price {
     public void setProductId(Long productId) {
         this.productId = productId;
     }
-
-//    public Product getProduct() {
-//        return product;
-//    }
-//
-//    public void setProduct(Product product) {
-//        this.product = product;
-//    }
 
 }

@@ -2,6 +2,7 @@ package ru.cvetkov.exercise.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,33 +33,24 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAllProduct() {
         final List<Product> products = productService.getAll();
         if (products.isEmpty()) {
-            log.warn("The Lists of products is empty");
+            log.warn("Список товаров пуст!");
+        } else {
+            log.info("Список товаров состоит из: " + products.size() + " шт.");
         }
-        log.info("Список товаров состоит из: " + products.size() + " шт.");
-        return !CollectionUtils.isEmpty(products)
-                ? new ResponseEntity<>(products, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-//    @GetMapping()
-//    public ResponseEntity<List<Product>> getProductsDate(@RequestParam ("date") DateTimeFormat date) {
-//        List<Product> products = productService.getAll();
-//
-//        if (products.isEmpty()) {
-//            log.warn("The Lists of products is empty");
-//        }
-//        log.info("Список товаров состоит из: " + products.size() + " шт.");
-//        return new ResponseEntity<>(products, HttpStatus.OK);
-//    }
-
-
-    //TODO: в случае отсутствия товара с id вывести лог error + исключение
     @GetMapping(value = "/{id}")
     public Optional<Product> getProductById(@PathVariable(name = "id") long id) {
-        return productService.getById(id);
+        if (productService.getById(id).isPresent()) {
+            return productService.getById(id);
+        } else {
+            log.error("Товара с id= " + id + " не существует");
+            throw
+                    new ResourceNotFoundException("Товара с id= " + id + " не существует");
+        }
     }
 
     //TODO получение статистики по загруженным товарам и ценам
-//    @GetMapping(value = "/statistic")
-//    public ResponseEntity
+    //@GetMapping(value = "/statistic")
 }

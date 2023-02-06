@@ -2,8 +2,12 @@ package ru.cvetkov.exercise.models;
 
 
 import jakarta.persistence.*;
+import org.hibernate.mapping.Collection;
+import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,6 +26,7 @@ public class Product {
         this.id = id;
         this.name = name;
     }
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "products_id")
     private List<Price> prices;
@@ -51,15 +56,14 @@ public class Product {
         this.name = name;
     }
 
-    public List<Price> getPrices() {
-        return this.prices;
+    public Double getPrice() {
+        if (this.prices.size() != 0) {
+            List<Price> actualPrices = this.prices;
+            actualPrices.sort(Comparator.comparing(Price::getDate));
+            Price priceFromList = actualPrices.get(actualPrices.size() - 1);
+            return priceFromList.getPrice();
+        }else{
+            return null;
+        }
     }
-
-    public void setPrices(List<Price> prices) {
-        this.prices = prices;
-    }
-
-    //    public Product(List<Price> price) {
-//        this.price = price;
-//    }
 }
