@@ -4,30 +4,32 @@ package ru.cvetkov.exercise.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table
+@Table(name = "Products")
 public class Product {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "name")
     private String name;
 
-    public Integer getId() {
-        return id;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+
 }
