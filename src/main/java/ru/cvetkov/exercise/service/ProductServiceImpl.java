@@ -9,10 +9,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
+
+    private ProductDAO productDAO;
 
     @Autowired
-    private ProductDAO productDAO;
+    public ProductServiceImpl(ProductDAO productDAO) {
+        this.productDAO = productDAO;
+    }
 
     @Override
     public void create(Product product) {
@@ -31,7 +35,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public boolean update(Product product, long id) {
-        if (productDAO.existsById(id)){
+        if (productDAO.existsById(id)) {
             product.setId(id);
             productDAO.save(product);
             return true;
@@ -50,7 +54,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product saveOrUpdate(Product product){
+    public Product saveOrUpdate(Product product) {
         return productDAO.save(product);
     }
 }

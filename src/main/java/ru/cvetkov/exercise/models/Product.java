@@ -3,7 +3,6 @@ package ru.cvetkov.exercise.models;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,9 +17,6 @@ public class Product {
     @Column(name = "name")
     private String name;
 
-    //    @OneToMany
-//    @JoinColumn(name = "product_id")
-//    private List<Price> prices = new ArrayList<>();
     public Product(Long id, String name) {
         this.id = id;
         this.name = name;
@@ -51,4 +47,14 @@ public class Product {
         this.name = name;
     }
 
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
+//    private List<Price> price;
+//
+//    public List<Price> getPrice() {
+//        return price;
+//    }
+//
+//    public Product(List<Price> price) {
+//        this.price = price;
+//    }
 }

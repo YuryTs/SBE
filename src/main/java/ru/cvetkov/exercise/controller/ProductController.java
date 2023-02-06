@@ -2,6 +2,7 @@ package ru.cvetkov.exercise.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -18,22 +19,17 @@ import java.util.Optional;
 @Slf4j
 public class ProductController {
 
-    @Autowired
     ProductService productService;
-
-    @Autowired
     PriceService priceService;
 
+    public ProductController(ProductService productService, PriceService priceService) {
+        this.productService = productService;
+        this.priceService = priceService;
+    }
+
     @GetMapping()
-    public ResponseEntity<List<Product>> getAll() {
+    public ResponseEntity<List<Product>> getAllProduct() {
         final List<Product> products = productService.getAll();
-//        Product newProduct = new Product(100L, "Mizumi");
-//        Product newProduct2 = new Product("NEC");
-//        log.info("наименование " + newProduct.getName() + " id " + newProduct.getId());
-//        log.info("наименование " + newProduct2.getName() + " id " + newProduct2.getId());
-//        products.add(productService.saveOrUpdate(newProduct));
-//        products.add(productService.saveOrUpdate(newProduct2));
-//        List<Product> products1 = productService.getAll();
         if (products.isEmpty()) {
             log.warn("The Lists of products is empty");
         }
@@ -43,18 +39,25 @@ public class ProductController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+//    @GetMapping()
+//    public ResponseEntity<List<Product>> getProductsDate(@RequestParam ("date") DateTimeFormat date) {
+//        List<Product> products = productService.getAll();
+//
+//        if (products.isEmpty()) {
+//            log.warn("The Lists of products is empty");
+//        }
+//        log.info("Список товаров состоит из: " + products.size() + " шт.");
+//        return new ResponseEntity<>(products, HttpStatus.OK);
+//    }
 
+
+    //TODO: в случае отсутствия товара с id вывести лог error + исключение
     @GetMapping(value = "/{id}")
-    public Optional<Product> getProductById(@PathVariable (name = "id") long id) {
+    public Optional<Product> getProductById(@PathVariable(name = "id") long id) {
         return productService.getById(id);
-
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") long id) {
-        final boolean deleted = productService.delete(id);
-        return deleted
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
-    }
+    //TODO получение статистики по загруженным товарам и ценам
+//    @GetMapping(value = "/statistic")
+//    public ResponseEntity
 }
