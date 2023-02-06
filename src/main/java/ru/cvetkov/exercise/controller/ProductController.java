@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.cvetkov.exercise.models.Product;
 import ru.cvetkov.exercise.service.PriceService;
 import ru.cvetkov.exercise.service.ProductService;
+import ru.cvetkov.exercise.service.ProductServiceImpl;
 
 import java.util.List;
 import java.util.Optional;

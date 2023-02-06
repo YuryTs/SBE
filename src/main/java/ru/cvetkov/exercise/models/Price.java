@@ -20,18 +20,18 @@ public class Price {
     @Column(name = "price")
     private Double price;
 
-    @DateTimeFormat(fallbackPatterns = "yyyy-mm-dd")
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "date")
     private Date date;
 
-    @Column(name = "product_id")
+    @Column(name = "products_id")
     private Long productId;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "products_id")
 //    private Product product;
-//
-//    public Price(){};
+
+    public Price(){};
 
     public Double getPrice() {
         return this.price;
@@ -72,4 +72,5 @@ public class Price {
 //    public void setProduct(Product product) {
 //        this.product = product;
 //    }
+
 }

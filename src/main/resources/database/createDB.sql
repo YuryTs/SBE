@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS prices
     id     BIGSERIAL  PRIMARY KEY,
     price  SERIAL,
     date   DATE,
-    product_id   BIGSERIAL   REFERENCES products (id)
+    products_id   BIGSERIAL   REFERENCES products (id)
 );
