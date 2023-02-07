@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS products
 CREATE TABLE IF NOT EXISTS prices
 (
     id     BIGSERIAL  PRIMARY KEY,
-    price  SERIAL,
+    price  DOUBLE PRECISION,
     date   DATE,
     products_id   BIGSERIAL   REFERENCES products (id)
 );
