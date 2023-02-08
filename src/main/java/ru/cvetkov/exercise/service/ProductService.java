@@ -1,5 +1,7 @@
 package ru.cvetkov.exercise.service;
 
+import org.springframework.data.crossstore.ChangeSetPersister;
+import ru.cvetkov.exercise.models.Price;
 import ru.cvetkov.exercise.models.Product;
 
 import java.util.List;
@@ -11,7 +13,7 @@ public interface ProductService {
 
     List<Product> getAll();
 
-    Optional<Product> getById(long id);
+    Product getById(long id) throws ChangeSetPersister.NotFoundException;
 
     boolean update(Product product, long id);
 
@@ -19,5 +21,8 @@ public interface ProductService {
 
     Product saveOrUpdate(Product product);
 
+   List<Product> getProductPrices(String reqDate);
+
+   List<Price> getPrices(Product product);
 
 }

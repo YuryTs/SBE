@@ -25,7 +25,7 @@ public class Price {
     @Column(name = "products_id")
     private Long productId;
 
-    public Price(){};
+    public Price(){}
 
     public Double getPrice() {
         return this.price;
@@ -59,4 +59,13 @@ public class Price {
         this.productId = productId;
     }
 
+    @Override
+    public String toString() {
+        return "Price{" +
+                "id=" + id +
+                ", price=" + price +
+                ", date=" + date +
+                ", productId=" + productId +
+                '}';
+    }
 }

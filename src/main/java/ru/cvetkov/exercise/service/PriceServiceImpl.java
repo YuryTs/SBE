@@ -1,10 +1,10 @@
 package ru.cvetkov.exercise.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.cvetkov.exercise.models.Price;
 import ru.cvetkov.exercise.repository.PriceDAO;
 
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -13,7 +13,6 @@ public class PriceServiceImpl implements PriceService{
 
     PriceDAO priceDAO;
 
-//    @Autowired
     public PriceServiceImpl(PriceDAO priceDAO) {
         this.priceDAO = priceDAO;
     }

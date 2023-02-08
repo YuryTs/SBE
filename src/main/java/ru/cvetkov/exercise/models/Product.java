@@ -42,7 +42,6 @@ public class Product {
         return this.id;
     }
 
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -51,35 +50,47 @@ public class Product {
         return this.name;
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
 
+//    public Double getPrice() {
+//        if (this.prices.size() != 0) {
+//            List<Price> actualPrices = this.prices;
+//            actualPrices.sort(Comparator.comparing(Price::getDate));
+//            Price priceFromList = actualPrices.get(actualPrices.size() - 1);
+//            return priceFromList.getPrice();
+//        } else {
+//            return null;
+//        }
+//    }
 
-    public Double getPrice() {
-        if (this.prices.size() != 0) {
-            List<Price> actualPrices = this.prices;
-            actualPrices.sort(Comparator.comparing(Price::getDate));
-            Price priceFromList = actualPrices.get(actualPrices.size() - 1);
-            return priceFromList.getPrice();
-        } else {
-            return null;
-        }
-    }
+//    public List<Price> getPriceList() { //todo проверка на null
+//        if (this.prices.size() != 0) {
+//            List<Price> actualPrices = this.prices;
+//            System.out.println(actualPrices);
+//            return actualPrices;
+//        } else {
+//            return null;
+//        }
+//    }
 
-    public List<Price> getPriceList() {
-        if (this.prices.size() != 0) {
-            List<Price> actualPrices = this.prices;
-            System.out.println(actualPrices);
-            return actualPrices;
-        } else {
-            return null;
-        }
+
+    public List<Price> getPrices() {
+        return prices;
     }
 
     public void setPrices(List<Price> prices) {
         this.prices = prices;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", prices=" + prices +
+                '}';
     }
 }
 
