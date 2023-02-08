@@ -56,14 +56,31 @@ public class Product {
         this.name = name;
     }
 
+
     public Double getPrice() {
         if (this.prices.size() != 0) {
             List<Price> actualPrices = this.prices;
             actualPrices.sort(Comparator.comparing(Price::getDate));
             Price priceFromList = actualPrices.get(actualPrices.size() - 1);
             return priceFromList.getPrice();
-        }else{
+        } else {
             return null;
         }
     }
+
+    public List<Price> getPriceList() {
+        if (this.prices.size() != 0) {
+            List<Price> actualPrices = this.prices;
+            System.out.println(actualPrices);
+            return actualPrices;
+        } else {
+            return null;
+        }
+    }
+
+    public void setPrices(List<Price> prices) {
+        this.prices = prices;
+    }
 }
+
+

@@ -13,7 +13,7 @@ public class PriceServiceImpl implements PriceService{
 
     PriceDAO priceDAO;
 
-    @Autowired
+//    @Autowired
     public PriceServiceImpl(PriceDAO priceDAO) {
         this.priceDAO = priceDAO;
     }

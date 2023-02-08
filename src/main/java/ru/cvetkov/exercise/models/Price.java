@@ -3,12 +3,9 @@ package ru.cvetkov.exercise.models;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalDate;
 
-//@Getter
-//@Setter
-//@ToString
+
 @Entity
 @Table(name = "prices")
 public class Price {
@@ -23,7 +20,7 @@ public class Price {
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDate date;
 
     @Column(name = "products_id")
     private Long productId;
@@ -34,7 +31,7 @@ public class Price {
         return this.price;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return this.date;
     }
 
@@ -54,7 +51,7 @@ public class Price {
         this.price = price;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
