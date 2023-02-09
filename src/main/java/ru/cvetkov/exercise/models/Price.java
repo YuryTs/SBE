@@ -23,9 +23,8 @@ public class Price {
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "products_id")
+    @JoinColumn(name = "product_id")
     private Product product;
-//    private Long productId;
 
     public Price(){}
 
@@ -45,10 +44,6 @@ public class Price {
         return this.date;
     }
 
-//    public Long getProductId() {
-//        return this.productId;
-//    }
-
     public Long getId() {
         return id;
     }
@@ -65,17 +60,4 @@ public class Price {
         this.date = date;
     }
 
-//    public void setProductId(Long productId) {
-//        this.productId = productId;
-//    }
-
-//    @Override
-//    public String toString() {
-//        return "Price{" +
-//                "id=" + id +
-//                ", price=" + price +
-//                ", date=" + date +
-//                ", productId=" + productId +
-//                '}';
-//    }
 }

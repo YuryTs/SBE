@@ -2,12 +2,6 @@ package ru.cvetkov.exercise.models;
 
 
 import jakarta.persistence.*;
-import org.hibernate.mapping.Collection;
-import org.springframework.data.domain.Sort;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -28,7 +22,7 @@ public class Product {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "products_id")
+    @JoinColumn(name = "product_id")
     private List<Price> prices;
 
     Double price;
@@ -56,35 +50,6 @@ public class Product {
         this.name = name;
     }
 
-//    public Double getPrice() {
-//        return price;
-//    }
-//
-//    public void setPrice(Double price) {
-//        this.price = price;
-//    }
-    //    public Double getPrice() {
-//        if (this.prices.size() != 0) {
-//            List<Price> actualPrices = this.prices;
-//            actualPrices.sort(Comparator.comparing(Price::getDate));
-//            Price priceFromList = actualPrices.get(actualPrices.size() - 1);
-//            return priceFromList.getPrice();
-//        } else {
-//            return null;
-//        }
-//    }
-
-//    public List<Price> getPriceList() { //todo проверка на null
-//        if (this.prices.size() != 0) {
-//            List<Price> actualPrices = this.prices;
-//            System.out.println(actualPrices);
-//            return actualPrices;
-//        } else {
-//            return null;
-//        }
-//    }
-
-
     public List<Price> getPrices() {
         return prices;
     }
@@ -93,14 +58,6 @@ public class Product {
         this.prices = prices;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", prices=" + prices +
-                '}';
-    }
 }
 
 

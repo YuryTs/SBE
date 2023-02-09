@@ -2,17 +2,13 @@ package ru.cvetkov.exercise.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.cvetkov.exercise.models.Price;
-import ru.cvetkov.exercise.models.Product;
 import ru.cvetkov.exercise.models.ProductDto;
 import ru.cvetkov.exercise.service.PriceService;
 import ru.cvetkov.exercise.service.ProductService;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -27,11 +23,6 @@ public class ProductController {
         this.productService = productService;
         this.priceService = priceService;
     }
-
-//    @GetMapping()
-//    public ResponseEntity<List<ProductDto>> getAll(){
-//        return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
-//    }
 
     @GetMapping()
     public ResponseEntity<List<ProductDto>> getProductsPriceDate(@RequestParam(name = "date") String date) {
