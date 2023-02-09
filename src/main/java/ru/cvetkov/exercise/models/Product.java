@@ -31,6 +31,8 @@ public class Product {
     @JoinColumn(name = "products_id")
     private List<Price> prices;
 
+    Double price;
+
     public Product() {
     }
 
@@ -55,6 +57,13 @@ public class Product {
     }
 
 //    public Double getPrice() {
+//        return price;
+//    }
+//
+//    public void setPrice(Double price) {
+//        this.price = price;
+//    }
+    //    public Double getPrice() {
 //        if (this.prices.size() != 0) {
 //            List<Price> actualPrices = this.prices;
 //            actualPrices.sort(Comparator.comparing(Price::getDate));
