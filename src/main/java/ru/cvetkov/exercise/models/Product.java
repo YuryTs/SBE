@@ -24,8 +24,6 @@ public class Product {
     @JoinColumn(name = "product_id")
     private List<Price> prices;
 
-    Double price;
-
     public Product() {
     }
 

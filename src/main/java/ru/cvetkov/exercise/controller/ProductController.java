@@ -1,6 +1,8 @@
 package ru.cvetkov.exercise.controller;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +31,13 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductPrices(date), HttpStatus.OK);
     }
 
+    @SneakyThrows
     @GetMapping(value = "/{id}")
-    public ProductDto getProductById(@PathVariable(name = "id") long id) throws ChangeSetPersister.NotFoundException {
+    public ProductDto getProductById(@PathVariable(name = "id") long id) throws ObjectNotFoundException {
        return productService.getById(id);
     }
 
     //TODO получение статистики по загруженным товарам и ценам
-    //@GetMapping(value = "/statistic")
+//    @GetMapping(value = "/statistic")
+//    public ResponseEntity<>
 }

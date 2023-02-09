@@ -1,13 +1,13 @@
 package ru.cvetkov.exercise.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import ru.cvetkov.exercise.models.Price;
 import ru.cvetkov.exercise.models.Product;
 import ru.cvetkov.exercise.models.ProductDto;
-import ru.cvetkov.exercise.repository.ProductDAO;
+import ru.cvetkov.exercise.repository.ProductDao;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,10 +17,10 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
-    private ProductDAO productDAO;
+    private ProductDao productDAO;
 
     @Autowired
-    public ProductServiceImpl(ProductDAO productDAO) {
+    public ProductServiceImpl(ProductDao productDAO) {
         this.productDAO = productDAO;
     }
 
@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
                     continue;
                 }else if (result > 0 && j == priceList.size()-1) {
                     price = priceList.get(j);
-                    productDtoList.add(new ProductDto(product.getName(), price.getPrice()));
+                    productDtoList.add(new ProductDto(price));
                     break;
                 } else {
                     price = priceList.get(j - 1);
@@ -76,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto getById(long id) throws ChangeSetPersister.NotFoundException {
+    public ProductDto getById(long id) throws ObjectNotFoundException {
         Optional<Product> product = productDAO.findById(id);
         if (product.isPresent()) {
             List<Price> pricesList = product.get().getPrices();
@@ -85,8 +85,7 @@ public class ProductServiceImpl implements ProductService {
             return new ProductDto(price);
         } else {
             log.error("Товара с id = " + id + " не существует");
-            throw
-                    new ChangeSetPersister.NotFoundException();
+           return null;
         }
     }
 //todo предлагаю исключить из кода не использующиеся методы

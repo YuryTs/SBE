@@ -2,7 +2,7 @@ package ru.cvetkov.exercise.service;
 
 import org.springframework.stereotype.Service;
 import ru.cvetkov.exercise.models.Price;
-import ru.cvetkov.exercise.repository.PriceDAO;
+import ru.cvetkov.exercise.repository.PriceDao;
 
 import java.util.List;
 
@@ -10,14 +10,14 @@ import java.util.List;
 @Service
 public class PriceServiceImpl implements PriceService{
 
-    PriceDAO priceDAO;
+    PriceDao priceDao;
 
-    public PriceServiceImpl(PriceDAO priceDAO) {
-        this.priceDAO = priceDAO;
+    public PriceServiceImpl(PriceDao priceDAO) {
+        this.priceDao = priceDAO;
     }
 
     @Override
     public List<Price> getAll() {
-        return priceDAO.findAll();
+        return priceDao.findAll();
     }
 }
