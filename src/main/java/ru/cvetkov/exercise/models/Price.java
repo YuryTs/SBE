@@ -2,7 +2,6 @@ package ru.cvetkov.exercise.models;
 
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
 
 

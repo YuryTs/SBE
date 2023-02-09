@@ -7,12 +7,12 @@ public class ProductDto {
     String name;
     Double price;
 
+    public ProductDto(){}
+
     public ProductDto(String name, Double price) {
         this.name = name;
         this.price = price;
     }
-
-    public ProductDto(){}
 
     public ProductDto(Price price){
         this.name = price.getProduct().getName();

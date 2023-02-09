@@ -4,8 +4,6 @@ CREATE TABLE IF NOT EXISTS products
     name VARCHAR(100) NOT NULL
 );
 
--- TRUNCATE TABLE products;
-
 CREATE TABLE IF NOT EXISTS prices
 (
     id     BIGSERIAL  PRIMARY KEY,

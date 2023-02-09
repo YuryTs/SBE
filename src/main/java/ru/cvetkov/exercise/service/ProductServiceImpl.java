@@ -8,24 +8,20 @@ import ru.cvetkov.exercise.models.Price;
 import ru.cvetkov.exercise.models.Product;
 import ru.cvetkov.exercise.models.ProductDto;
 import ru.cvetkov.exercise.repository.ProductDAO;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
-    private final MappingUtils mappingUtils;
     private ProductDAO productDAO;
 
     @Autowired
-    public ProductServiceImpl(ProductDAO productDAO, MappingUtils mappingUtils) {
+    public ProductServiceImpl(ProductDAO productDAO) {
         this.productDAO = productDAO;
-        this.mappingUtils = mappingUtils;
     }
 
     @Override
@@ -93,7 +89,7 @@ public class ProductServiceImpl implements ProductService {
                     new ChangeSetPersister.NotFoundException();
         }
     }
-
+//todo предлагаю исключить из кода не использующиеся методы
     @Override
     public boolean update(Product product, long id) {
         if (productDAO.existsById(id)) {
@@ -101,7 +97,7 @@ public class ProductServiceImpl implements ProductService {
             productDAO.save(product);
             return true;
         }
-        return false;
+        return false; //todo логирование с уровнем war или error
     }
 
     @Override

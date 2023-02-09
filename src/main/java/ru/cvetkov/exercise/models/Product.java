@@ -1,6 +1,5 @@
 package ru.cvetkov.exercise.models;
 
-
 import jakarta.persistence.*;
 import java.util.List;
 
