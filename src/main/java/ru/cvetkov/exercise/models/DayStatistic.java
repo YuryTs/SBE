@@ -1,21 +1,43 @@
 package ru.cvetkov.exercise.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
+import java.util.Date;
 
 public class DayStatistic {
-    LocalDate localDate;
-    Integer frequency;
 
-    public DayStatistic(LocalDate localDate, Integer frequency) {
-        this.localDate = localDate;
+    @JsonProperty ("Дата")
+    Date date;
+    @JsonProperty ("Частота изменений цен")
+    Long frequency;
+
+    public DayStatistic(Date date, Long frequency) {
+        this.date = date;
         this.frequency = frequency;
     }
 
-    public LocalDate getLocalDate() {
-        return localDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setLocalDate(LocalDate localDate) {
-        this.localDate = localDate;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Long getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(Long frequency) {
+        this.frequency = frequency;
+    }
+
+    @Override
+    public String toString() {
+        return "DayStatistic{" +
+                "Дата =" + date +
+                ", frequency=" + frequency +
+                '}';
     }
 }

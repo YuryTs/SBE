@@ -1,6 +1,7 @@
 package ru.cvetkov.exercise.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import ru.cvetkov.exercise.models.DayStatistic;
 import ru.cvetkov.exercise.models.Price;
 import ru.cvetkov.exercise.models.Statistic;
 
@@ -14,6 +15,6 @@ public interface PriceService {
 
     List<Statistic> getCountPriceProduct();
 
-    String getStatistic() throws JsonProcessingException;
+    List<DayStatistic> getDateStatistic();
 
 }

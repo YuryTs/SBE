@@ -1,13 +1,18 @@
 package ru.cvetkov.exercise.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class Statistic {
-    String name;
-    Integer frequency;
 
-    public Statistic(String name, Integer frequency) {
+    @JsonProperty("Товар")
+    String name;
+
+    @JsonProperty("Частота изменения цены товара")
+    Long frequency;
+
+    public Statistic(String name, Long frequency) {
         this.name = name;
         this.frequency = frequency;
     }
@@ -20,11 +25,19 @@ public class Statistic {
         this.name = name;
     }
 
-    public Integer getFrequency() {
+    public Long getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(Integer frequency) {
+    public void setFrequency(Long frequency) {
         this.frequency = frequency;
+    }
+
+    @Override
+    public String toString() {
+        return "Statistic{" +
+                "name='" + name  +
+                ", frequency=" + frequency +
+                '}';
     }
 }

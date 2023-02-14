@@ -1,16 +1,19 @@
 package ru.cvetkov.exercise.controller;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.cvetkov.exercise.models.Price;
-import ru.cvetkov.exercise.models.PriceDto;
-import ru.cvetkov.exercise.models.Statistic;
+import ru.cvetkov.exercise.models.*;
 import ru.cvetkov.exercise.service.PriceService;
 import ru.cvetkov.exercise.service.ProductService;
 
@@ -38,8 +41,15 @@ public class ProductController {
     }
 
     @GetMapping(value = "/statistic")
-    public String getStatistic() throws JsonProcessingException {
-        return priceService.getStatistic();
+    public AgrigatedStatistic getStatistic() throws JsonProcessingException {
+
+        Long count = productService.getCount();
+        List<Statistic> statistics = priceService.getCountPriceProduct();
+        List<DayStatistic> dayStatistics = priceService.getDateStatistic();
+        AgrigatedStatistic agreg = new AgrigatedStatistic(count, statistics, dayStatistics);
+
+
+        return agreg;
     }
 
     @GetMapping

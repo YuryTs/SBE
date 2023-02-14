@@ -18,9 +18,9 @@ public interface PriceDao extends JpaRepository<Price, Long> {
 
 
     @Query(value = "select p.name , count (pr.price) as frequency from prices pr join products p on p.id=pr.product_id group by p.name", nativeQuery = true)
-    List<Statistic> getCountPriceProduct();
+    List<Object[]> getCountPriceProduct();
 
     @Query(value = "select pr.date , count (pr.price) as frequency from prices pr join products p on p.id=pr.product_id group by pr.date", nativeQuery = true)
-    List<DayStatistic> getDateStatistic();
+    List<Object[]> getDateStatistic();
 
 }

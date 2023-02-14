@@ -75,6 +75,11 @@ public class ProductServiceImpl implements ProductService {
         return product.getPrices();
     }
 
+    @Override
+    public Long getCount() {
+        return productDAO.count();
+    }
+
 //    @Override
 //    public List<Statistic> getChangePriceStatisticProduct() {
 //        List<Product> products = productDAO.findAll();

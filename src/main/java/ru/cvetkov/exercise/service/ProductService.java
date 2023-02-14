@@ -22,4 +22,6 @@ public interface ProductService {
 
    List<Price> getPrices(Product product);
 
+   Long getCount();
+
 }
