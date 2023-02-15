@@ -1,19 +1,26 @@
 package ru.cvetkov.exercise.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.cvetkov.exercise.models.GeneralProductAndPriceStatistic;
 import ru.cvetkov.exercise.models.StatisticGroupByDate;
 import ru.cvetkov.exercise.models.Price;
 import ru.cvetkov.exercise.models.StatisticGroupByProduct;
 import ru.cvetkov.exercise.repository.PriceDao;
+import ru.cvetkov.exercise.repository.ProductDao;
+
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.*;
 
 @Slf4j
 @Service
 public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceService {
 
     PriceDao priceDao;
+    @Autowired
+    ProductService productService;
 
     public PriceServiceImpl(PriceDao priceDAO) {
         this.priceDao = priceDAO;
@@ -65,5 +72,43 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
             log.warn("Список товаров пуст!");
             return null;
         }
+    }
+
+    @Override
+    public GeneralProductAndPriceStatistic getGeneralStatistic() {
+        final ExecutorService executor = Executors.newFixedThreadPool(3);
+        GeneralProductAndPriceStatistic answer = new GeneralProductAndPriceStatistic();
+        try {
+            Future<Long> countProducts = getFutureCount(1, executor);
+            Future<List<StatisticGroupByProduct>> futureStatistic = getFutureCountPriceProduct(2, executor);
+            Future<List<StatisticGroupByDate>> futureDay = getFutureDateStatistic(3, executor);
+
+            Long count = countProducts.get(5, TimeUnit.SECONDS);
+            List<StatisticGroupByProduct> statisticGroupByProducts = futureStatistic.get(5, TimeUnit.SECONDS);
+            List<StatisticGroupByDate> statisticGroupByDates = futureDay.get(5, TimeUnit.SECONDS);
+            answer = GeneralProductAndPriceStatistic.builder()
+                    .count(count)
+                    .statisticGroupByProductList(statisticGroupByProducts)
+                    .statisticGroupByDateList(statisticGroupByDates).build();
+
+            executor.shutdown();
+
+        } catch (InterruptedException | TimeoutException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return answer;
+    }
+
+    private Future<Long> getFutureCount(int ThreadNum, ExecutorService executorService) {
+        return executorService.submit(() -> productService.getCount());
+    }
+
+    private Future<List<StatisticGroupByProduct>> getFutureCountPriceProduct(int ThreadNum, ExecutorService executorService) {
+        return executorService.submit(() ->
+                this.getCountPriceProduct());
+    }
+
+    private Future<List<StatisticGroupByDate>> getFutureDateStatistic(int ThreadNum, ExecutorService executorService) {
+        return executorService.submit(() -> this.getDateStatistic());
     }
 }

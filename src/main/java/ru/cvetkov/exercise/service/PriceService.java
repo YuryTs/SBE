@@ -1,5 +1,6 @@
 package ru.cvetkov.exercise.service;
 
+import ru.cvetkov.exercise.models.GeneralProductAndPriceStatistic;
 import ru.cvetkov.exercise.models.StatisticGroupByDate;
 import ru.cvetkov.exercise.models.Price;
 import ru.cvetkov.exercise.models.StatisticGroupByProduct;
@@ -15,5 +16,7 @@ public interface PriceService {
     List<StatisticGroupByProduct> getCountPriceProduct();
 
     List<StatisticGroupByDate> getDateStatistic();
+
+    GeneralProductAndPriceStatistic getGeneralStatistic();
 
 }
