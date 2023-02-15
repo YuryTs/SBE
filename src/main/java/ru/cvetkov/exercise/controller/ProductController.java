@@ -11,8 +11,6 @@ import ru.cvetkov.exercise.service.ProductService;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
@@ -27,7 +25,6 @@ public class ProductController {
         this.priceService = priceService;
     }
 
-
     @SneakyThrows
     @GetMapping(value = "/{id}")
     public PriceDto getProductById(@PathVariable(name = "id") long id) throws ObjectNotFoundException {
@@ -35,8 +32,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/statistic")
-
-    public GeneralProductAndPriceStatistic getStatistic() {
+    public GeneralProductPriceStatistic getStatistic() {
         return priceService.getGeneralStatistic();
     }
 
@@ -44,6 +40,12 @@ public class ProductController {
     public List<PriceDto> getAllByDate(
             @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         List<Price> prices = priceService.getListByDate(date);
-        return prices.stream().map(PriceDto::new).collect(Collectors.toList());
+        if (prices.isEmpty()) {
+            log.error("Список товаров пуст!");
+            return Collections.emptyList();
+        }else{
+            log.info(String.valueOf(prices.size()));
+            return prices.stream().map(PriceDto::new).toList();
+        }
     }
 }

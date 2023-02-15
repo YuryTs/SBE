@@ -3,12 +3,11 @@ package ru.cvetkov.exercise.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.cvetkov.exercise.models.GeneralProductAndPriceStatistic;
+import ru.cvetkov.exercise.models.GeneralProductPriceStatistic;
 import ru.cvetkov.exercise.models.StatisticGroupByDate;
 import ru.cvetkov.exercise.models.Price;
 import ru.cvetkov.exercise.models.StatisticGroupByProduct;
 import ru.cvetkov.exercise.repository.PriceDao;
-import ru.cvetkov.exercise.repository.ProductDao;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -24,11 +23,6 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
 
     public PriceServiceImpl(PriceDao priceDAO) {
         this.priceDao = priceDAO;
-    }
-
-    @Override
-    public List<Price> getAll() {
-        return priceDao.findAll();
     }
 
     @Override
@@ -51,7 +45,7 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
             return statisticGroupByProductList;
         } else {
             log.warn("Список товаров пуст!");
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -70,14 +64,14 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
             return statisticGroupByDates;
         } else {
             log.warn("Список товаров пуст!");
-            return null;
+            return Collections.emptyList();
         }
     }
 
     @Override
-    public GeneralProductAndPriceStatistic getGeneralStatistic() {
+    public GeneralProductPriceStatistic getGeneralStatistic() {
         final ExecutorService executor = Executors.newFixedThreadPool(3);
-        GeneralProductAndPriceStatistic answer = new GeneralProductAndPriceStatistic();
+        GeneralProductPriceStatistic answer = new GeneralProductPriceStatistic();
         try {
             Future<Long> countProducts = getFutureCount(1, executor);
             Future<List<StatisticGroupByProduct>> futureStatistic = getFutureCountPriceProduct(2, executor);
@@ -86,7 +80,7 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
             Long count = countProducts.get(5, TimeUnit.SECONDS);
             List<StatisticGroupByProduct> statisticGroupByProducts = futureStatistic.get(5, TimeUnit.SECONDS);
             List<StatisticGroupByDate> statisticGroupByDates = futureDay.get(5, TimeUnit.SECONDS);
-            answer = GeneralProductAndPriceStatistic.builder()
+            answer = GeneralProductPriceStatistic.builder()
                     .count(count)
                     .statisticGroupByProductList(statisticGroupByProducts)
                     .statisticGroupByDateList(statisticGroupByDates).build();
@@ -94,21 +88,22 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
             executor.shutdown();
 
         } catch (InterruptedException | TimeoutException | ExecutionException e) {
-            e.printStackTrace();
+            log.warn("Interrupted!", e);
+            Thread.currentThread().interrupt();
         }
+
         return answer;
     }
 
-    private Future<Long> getFutureCount(int ThreadNum, ExecutorService executorService) {
+    private Future<Long> getFutureCount(int threadNum, ExecutorService executorService) {
         return executorService.submit(() -> productService.getCount());
     }
 
-    private Future<List<StatisticGroupByProduct>> getFutureCountPriceProduct(int ThreadNum, ExecutorService executorService) {
-        return executorService.submit(() ->
-                this.getCountPriceProduct());
+    private Future<List<StatisticGroupByProduct>> getFutureCountPriceProduct(int threadNum, ExecutorService executorService) {
+        return executorService.submit(this::getCountPriceProduct);
     }
 
-    private Future<List<StatisticGroupByDate>> getFutureDateStatistic(int ThreadNum, ExecutorService executorService) {
-        return executorService.submit(() -> this.getDateStatistic());
+    private Future<List<StatisticGroupByDate>> getFutureDateStatistic(int threadNum, ExecutorService executorService) {
+        return executorService.submit(this::getDateStatistic);
     }
 }

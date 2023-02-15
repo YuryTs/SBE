@@ -8,7 +8,7 @@ import java.util.List;
 
 @Builder
 @AllArgsConstructor
-public class GeneralProductAndPriceStatistic {
+public class GeneralProductPriceStatistic {
     @JsonProperty("Количество товаров в БД:")
     Long count;
 
@@ -18,7 +18,8 @@ public class GeneralProductAndPriceStatistic {
     @JsonProperty("Частота изменения цены в разрезе дат:")
     List<StatisticGroupByDate> statisticGroupByDateList;
 
-    public GeneralProductAndPriceStatistic() {
+    public GeneralProductPriceStatistic() {
+        return;
     }
 
     public Long getCount() {
@@ -47,7 +48,7 @@ public class GeneralProductAndPriceStatistic {
 
     @Override
     public String toString() {
-        return "GeneralProductAndPriceStatistic{" +
+        return "GeneralProductPriceStatistic{" +
                 "count=" + count +
                 ", statisticGroupByProductList=" + statisticGroupByProductList +
                 ", statisticGroupByDateList=" + statisticGroupByDateList +
