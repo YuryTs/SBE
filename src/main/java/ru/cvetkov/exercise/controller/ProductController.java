@@ -19,6 +19,7 @@ import ru.cvetkov.exercise.service.ProductService;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -37,19 +38,45 @@ public class ProductController {
     @SneakyThrows
     @GetMapping(value = "/{id}")
     public PriceDto getProductById(@PathVariable(name = "id") long id) throws ObjectNotFoundException {
-       return productService.getById(id);
+        return productService.getById(id);
     }
 
     @GetMapping(value = "/statistic")
-    public AgrigatedStatistic getStatistic() throws JsonProcessingException {
 
-        Long count = productService.getCount();
-        List<Statistic> statistics = priceService.getCountPriceProduct();
-        List<DayStatistic> dayStatistics = priceService.getDateStatistic();
-        AgrigatedStatistic agreg = new AgrigatedStatistic(count, statistics, dayStatistics);
+    public AgrigatedStatistic getStatistic() {
+        final ExecutorService executor = Executors.newFixedThreadPool(3);
+        AgrigatedStatistic answer = new AgrigatedStatistic();
+        try {
+            Future<Long> countProducts = getFutureCount(1, executor);
+            Future<List<Statistic>> futureStatistic = getFutureCountPriceProduct(2, executor);
+            Future<List<DayStatistic>> futureDay = getFutureDateStatistic(3, executor);
 
+            Long count = countProducts.get(5, TimeUnit.SECONDS);
+            List<Statistic> statistics = futureStatistic.get(5, TimeUnit.SECONDS);
+            List<DayStatistic> dayStatistics = futureDay.get(5, TimeUnit.SECONDS);
+            answer = AgrigatedStatistic.builder()
+                    .count(count)
+                    .statisticList(statistics)
+                    .dayStatisticList(dayStatistics).build();
 
-        return agreg;
+            executor.shutdown();
+
+        } catch (InterruptedException | TimeoutException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return answer;
+    }
+
+    private Future<Long> getFutureCount(int ThreadNum, ExecutorService executorService) {
+        return executorService.submit(() -> productService.getCount());
+    }
+
+    private Future<List<Statistic>> getFutureCountPriceProduct(int ThreadNum, ExecutorService executorService) {
+        return executorService.submit(() -> priceService.getCountPriceProduct());
+    }
+
+    private Future<List<DayStatistic>> getFutureDateStatistic(int ThreadNum, ExecutorService executorService) {
+        return executorService.submit(() -> priceService.getDateStatistic());
     }
 
     @GetMapping

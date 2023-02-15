@@ -2,6 +2,7 @@ package ru.cvetkov.exercise.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.cvetkov.exercise.models.AgrigatedStatistic;
 import ru.cvetkov.exercise.models.DayStatistic;
@@ -11,13 +12,11 @@ import ru.cvetkov.exercise.repository.PriceDao;
 import ru.cvetkov.exercise.repository.ProductDao;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-
+@Slf4j
 @Service
-public class PriceServiceImpl extends ParseServiceImpl implements PriceService{
+public class PriceServiceImpl extends ParseServiceImpl implements PriceService {
 
     PriceDao priceDao;
 //    ProductDao productDao;
@@ -32,32 +31,46 @@ public class PriceServiceImpl extends ParseServiceImpl implements PriceService{
     }
 
     @Override
-    public List<Price> getListByDate(LocalDate date){
+    public List<Price> getListByDate(LocalDate date) {
         return priceDao.getListByDate(date);
     }
 
     @Override
     public List<Statistic> getCountPriceProduct() {
         List<Object[]> allObjects = priceDao.getCountPriceProduct();
-        List<Statistic> statisticList = new ArrayList<>();
-        for (Object[] objects: allObjects){
-            String name = (String) convertToList(objects).get(0);
-          Long frequency = (Long) convertToList(objects).get(1);
-            statisticList.add(new Statistic(name,frequency));
+        int sizeAllObject = allObjects.size();
+        if (sizeAllObject != 0) {
+            log.info(String.valueOf(allObjects.size()));
+            List<Statistic> statisticList = new ArrayList<>();
+            for (Object[] objects : allObjects) {
+                String name = (String) convertToList(objects).get(0);
+                Long frequency = (Long) convertToList(objects).get(1);
+                statisticList.add(new Statistic(name, frequency));
+            }
+            return statisticList;
+        } else {
+            log.warn("Список товаров пуст!");
+            return null;
         }
-        return statisticList;
     }
 
     @Override
-    public List<DayStatistic> getDateStatistic(){
+    public List<DayStatistic> getDateStatistic() {
         List<Object[]> allObjects = priceDao.getDateStatistic();
-        List<DayStatistic> dayStatistics = new ArrayList<>();
-        for(Object[] objects : allObjects){
-            Date date = (Date) convertToList(objects).get(0);
-            Long frequency = (Long) convertToList(objects).get(1);
-            dayStatistics.add(new DayStatistic(date, frequency));
+        int sizeAllObject = allObjects.size();
+        if (sizeAllObject != 0) {
+            log.info(String.valueOf(allObjects.size()));
+            List<DayStatistic> dayStatistics = new ArrayList<>();
+            for (Object[] objects : allObjects) {
+                Date date = (Date) convertToList(objects).get(0);
+                Long frequency = (Long) convertToList(objects).get(1);
+                dayStatistics.add(new DayStatistic(date, frequency));
+            }
+            return dayStatistics;
+        } else {
+            log.warn("Список товаров пуст!");
+            return null;
         }
-        return dayStatistics;
     }
 
 //    public Long getCountNameProduct(){
@@ -76,4 +89,4 @@ public class PriceServiceImpl extends ParseServiceImpl implements PriceService{
 //                .statisticList(priceDao.getCountPriceProduct())
 //                .count(productDao.count()).build());
 //    }
-}
+    }
