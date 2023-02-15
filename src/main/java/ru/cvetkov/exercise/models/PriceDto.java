@@ -3,18 +3,18 @@ package ru.cvetkov.exercise.models;
 import lombok.Data;
 
 @Data
-public class ProductDto {
+public class PriceDto {
     String name;
     Double price;
 
-    public ProductDto(){}
+    public PriceDto(){}
 
-    public ProductDto(String name, Double price) {
+    public PriceDto(String name, Double price) {
         this.name = name;
         this.price = price;
     }
 
-    public ProductDto(Price price){
+    public PriceDto(Price price){
         this.name = price.getProduct().getName();
         this.price = price.getPrice();
     }
