@@ -1,22 +1,13 @@
 package ru.cvetkov.exercise.controller;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.ObjectNotFoundException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.cvetkov.exercise.models.*;
 import ru.cvetkov.exercise.service.PriceService;
 import ru.cvetkov.exercise.service.ProductService;
-
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.*;
@@ -43,21 +34,21 @@ public class ProductController {
 
     @GetMapping(value = "/statistic")
 
-    public AgrigatedStatistic getStatistic() {
+    public GeneralProductAndPriceStatistic getStatistic() {
         final ExecutorService executor = Executors.newFixedThreadPool(3);
-        AgrigatedStatistic answer = new AgrigatedStatistic();
+        GeneralProductAndPriceStatistic answer = new GeneralProductAndPriceStatistic();
         try {
             Future<Long> countProducts = getFutureCount(1, executor);
-            Future<List<Statistic>> futureStatistic = getFutureCountPriceProduct(2, executor);
-            Future<List<DayStatistic>> futureDay = getFutureDateStatistic(3, executor);
+            Future<List<StatisticGroupByProduct>> futureStatistic = getFutureCountPriceProduct(2, executor);
+            Future<List<StatisticGroupByDate>> futureDay = getFutureDateStatistic(3, executor);
 
             Long count = countProducts.get(5, TimeUnit.SECONDS);
-            List<Statistic> statistics = futureStatistic.get(5, TimeUnit.SECONDS);
-            List<DayStatistic> dayStatistics = futureDay.get(5, TimeUnit.SECONDS);
-            answer = AgrigatedStatistic.builder()
+            List<StatisticGroupByProduct> statisticGroupByProducts = futureStatistic.get(5, TimeUnit.SECONDS);
+            List<StatisticGroupByDate> statisticGroupByDates = futureDay.get(5, TimeUnit.SECONDS);
+            answer = GeneralProductAndPriceStatistic.builder()
                     .count(count)
-                    .statisticList(statistics)
-                    .dayStatisticList(dayStatistics).build();
+                    .statisticGroupByProductList(statisticGroupByProducts)
+                    .statisticGroupByDateList(statisticGroupByDates).build();
 
             executor.shutdown();
 
@@ -71,11 +62,11 @@ public class ProductController {
         return executorService.submit(() -> productService.getCount());
     }
 
-    private Future<List<Statistic>> getFutureCountPriceProduct(int ThreadNum, ExecutorService executorService) {
+    private Future<List<StatisticGroupByProduct>> getFutureCountPriceProduct(int ThreadNum, ExecutorService executorService) {
         return executorService.submit(() -> priceService.getCountPriceProduct());
     }
 
-    private Future<List<DayStatistic>> getFutureDateStatistic(int ThreadNum, ExecutorService executorService) {
+    private Future<List<StatisticGroupByDate>> getFutureDateStatistic(int ThreadNum, ExecutorService executorService) {
         return executorService.submit(() -> priceService.getDateStatistic());
     }
 

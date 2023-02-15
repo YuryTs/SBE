@@ -2,17 +2,16 @@ package ru.cvetkov.exercise.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDate;
 import java.util.Date;
 
-public class DayStatistic {
+public class StatisticGroupByDate {
 
     @JsonProperty ("Дата")
     Date date;
     @JsonProperty ("Частота изменений цен")
     Long frequency;
 
-    public DayStatistic(Date date, Long frequency) {
+    public StatisticGroupByDate(Date date, Long frequency) {
         this.date = date;
         this.frequency = frequency;
     }
@@ -35,7 +34,7 @@ public class DayStatistic {
 
     @Override
     public String toString() {
-        return "DayStatistic{" +
+        return "StatisticGroupByDate{" +
                 "Дата =" + date +
                 ", frequency=" + frequency +
                 '}';

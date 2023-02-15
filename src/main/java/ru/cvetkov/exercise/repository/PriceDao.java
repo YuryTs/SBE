@@ -3,9 +3,7 @@ package ru.cvetkov.exercise.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.cvetkov.exercise.models.DayStatistic;
 import ru.cvetkov.exercise.models.Price;
-import ru.cvetkov.exercise.models.Statistic;
 
 import java.time.LocalDate;
 import java.util.List;

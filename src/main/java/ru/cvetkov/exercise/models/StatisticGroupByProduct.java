@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class Statistic {
+public class StatisticGroupByProduct {
 
     @JsonProperty("Товар")
     String name;
@@ -12,7 +12,7 @@ public class Statistic {
     @JsonProperty("Частота изменения цены товара")
     Long frequency;
 
-    public Statistic(String name, Long frequency) {
+    public StatisticGroupByProduct(String name, Long frequency) {
         this.name = name;
         this.frequency = frequency;
     }
@@ -35,7 +35,7 @@ public class Statistic {
 
     @Override
     public String toString() {
-        return "Statistic{" +
+        return "StatisticGroupByProduct{" +
                 "name='" + name  +
                 ", frequency=" + frequency +
                 '}';

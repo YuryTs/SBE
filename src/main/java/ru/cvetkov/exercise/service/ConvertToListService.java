@@ -2,6 +2,6 @@ package ru.cvetkov.exercise.service;
 
 import java.util.List;
 
-public interface ParseService {
+public interface ConvertToListService {
     List<?> convertToList (Object object);
 }
