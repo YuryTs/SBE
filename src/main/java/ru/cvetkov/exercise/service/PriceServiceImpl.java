@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.cvetkov.exercise.models.*;
 import ru.cvetkov.exercise.repository.PriceDao;
-
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.*;
@@ -81,7 +80,7 @@ public class PriceServiceImpl implements PriceService {
     @Override
     public GeneralProductPriceStatistic getGeneralStatistic() throws SbException {
         final ExecutorService executor = Executors.newFixedThreadPool(3);
-        GeneralProductPriceStatistic answer = new GeneralProductPriceStatistic();
+        GeneralProductPriceStatistic answer;
         try {
             Future<Long> countProducts = executor.submit(() -> productService.getCount());
             Future<List<StatisticGroupByProduct>> futureStatistic = executor.submit(this::getCountPriceProduct);
