@@ -15,11 +15,15 @@ import java.util.concurrent.*;
 public class PriceServiceImpl implements PriceService {
 
     PriceDao priceDao;
-    @Autowired
     ProductService productService;
 
     public PriceServiceImpl(PriceDao priceDAO) {
         this.priceDao = priceDAO;
+    }
+    @Autowired
+    public PriceServiceImpl(PriceDao priceDao, ProductService productService) {
+        this.priceDao = priceDao;
+        this.productService = productService;
     }
 
     @Override
@@ -39,14 +43,15 @@ public class PriceServiceImpl implements PriceService {
         List<Object[]> allObjects = priceDao.getCountPriceProduct();
         int sizeAllObject = allObjects.size();
         if (sizeAllObject != 0) {
-            log.info(String.valueOf(allObjects.size()));
-            List<StatisticGroupByProduct> statisticGroupByProductList = new ArrayList<>();
-            for (Object[] objects : allObjects) {
-                String name = (String) objects[0];
-                Long frequency = (Long) objects[1];
-                statisticGroupByProductList.add(new StatisticGroupByProduct(name, frequency));
-            }
-            return statisticGroupByProductList;
+            log.info("Количество товаров: " + allObjects.size());
+            return
+            allObjects.stream()
+                    .map(objects-> {
+                                String name = (String) objects[0];
+                                Long frequency = (Long) objects[1];
+                                return new StatisticGroupByProduct(name, frequency);
+                            }
+                            ).toList();
         } else {
             log.warn("Список товаров пуст!");
             return Collections.emptyList();
@@ -59,13 +64,14 @@ public class PriceServiceImpl implements PriceService {
         int sizeAllObject = allObjects.size();
         if (sizeAllObject != 0) {
             log.info("Размер вовзращаемого списка: " + allObjects.size());
-            List<StatisticGroupByDate> statisticGroupByDates = new ArrayList<>();
-            for (Object[] objects : allObjects) {
-                Date date = (Date) objects[0];
-                Long frequency = (Long) objects[1];
-                statisticGroupByDates.add(new StatisticGroupByDate(date, frequency));
-            }
-            return statisticGroupByDates;
+            return
+                    allObjects.stream()
+                            .map(objects-> {
+                                        Date date = (Date) objects[0];
+                                        Long frequency = (Long) objects[1];
+                                        return new StatisticGroupByDate(date, frequency);
+                                    }
+                            ).toList();
         } else {
             log.warn("Список товаров пуст!");
             return Collections.emptyList();
@@ -77,9 +83,9 @@ public class PriceServiceImpl implements PriceService {
         final ExecutorService executor = Executors.newFixedThreadPool(3);
         GeneralProductPriceStatistic answer = new GeneralProductPriceStatistic();
         try {
-            Future<Long> countProducts = getFutureCount(1, executor);
-            Future<List<StatisticGroupByProduct>> futureStatistic = getFutureCountPriceProduct(2, executor);
-            Future<List<StatisticGroupByDate>> futureDay = getFutureDateStatistic(3, executor);
+            Future<Long> countProducts = executor.submit(() -> productService.getCount());
+            Future<List<StatisticGroupByProduct>> futureStatistic = executor.submit(this::getCountPriceProduct);
+            Future<List<StatisticGroupByDate>> futureDay = executor.submit(this::getDateStatistic);
 
             Long count = countProducts.get(5, TimeUnit.SECONDS);
             List<StatisticGroupByProduct> statisticGroupByProducts = futureStatistic.get(5, TimeUnit.SECONDS);
@@ -95,17 +101,5 @@ public class PriceServiceImpl implements PriceService {
             throw new SbException("Ошибка выполнения getGeneralStatistic");
         }
         return answer;
-    }
-
-    private Future<Long> getFutureCount(int threadNum, ExecutorService executorService) {
-        return executorService.submit(() -> productService.getCount());
-    }
-
-    private Future<List<StatisticGroupByProduct>> getFutureCountPriceProduct(int threadNum, ExecutorService executorService) {
-        return executorService.submit(this::getCountPriceProduct);
-    }
-
-    private Future<List<StatisticGroupByDate>> getFutureDateStatistic(int threadNum, ExecutorService executorService) {
-        return executorService.submit(this::getDateStatistic);
     }
 }

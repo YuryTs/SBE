@@ -8,6 +8,7 @@ import ru.cvetkov.exercise.models.Price;
 import ru.cvetkov.exercise.models.Product;
 import ru.cvetkov.exercise.models.PriceDto;
 import ru.cvetkov.exercise.repository.ProductDao;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -29,15 +30,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PriceDto getById(long id) throws ObjectNotFoundException {
-        Optional<Product> product = productDAO.findById(id);
-        if (product.isPresent()) {
-            List<Price> pricesList = product.get().getPrices();
-            pricesList.sort(Comparator.comparing(Price::getDate));
-            Price price = pricesList.get(pricesList.size()-1);
-            return new PriceDto(price);
-        } else {
+        Optional<Product> product = Optional.of(productDAO.findById(id).orElse(new Product()));
+        List<Price> pricesList = product.get().getPrices();
+        if (pricesList.isEmpty()) {
             log.error("Товара с id = " + id + " не существует");
-           return null;
+            return null;
+        } else {
+            pricesList.sort(Comparator.comparing(Price::getDate));
+            Price price = pricesList.get(pricesList.size() - 1);
+            return new PriceDto(price);
         }
     }
 }

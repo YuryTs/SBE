@@ -12,6 +12,9 @@ public class StatisticGroupByProduct {
     @JsonProperty("Частота изменения цены товара")
     Long frequency;
 
+    public StatisticGroupByProduct() {
+    }
+
     public StatisticGroupByProduct(String name, Long frequency) {
         this.name = name;
         this.frequency = frequency;

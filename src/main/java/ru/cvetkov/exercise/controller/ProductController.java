@@ -1,6 +1,5 @@
 package ru.cvetkov.exercise.controller;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
