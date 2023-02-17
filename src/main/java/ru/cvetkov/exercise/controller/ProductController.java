@@ -25,27 +25,20 @@ public class ProductController {
         this.priceService = priceService;
     }
 
-    @SneakyThrows
+
     @GetMapping(value = "/{id}")
     public PriceDto getProductById(@PathVariable(name = "id") long id) throws ObjectNotFoundException {
         return productService.getById(id);
     }
 
     @GetMapping(value = "/statistic")
-    public GeneralProductPriceStatistic getStatistic() {
+    public GeneralProductPriceStatistic getStatistic() throws SbException {
         return priceService.getGeneralStatistic();
     }
 
     @GetMapping
     public List<PriceDto> getAllByDate(
             @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
-        List<Price> prices = priceService.getListByDate(date);
-        if (prices.isEmpty()) {
-            log.error("Список товаров пуст!");
-            return Collections.emptyList();
-        }else{
-            log.info(String.valueOf(prices.size()));
-            return prices.stream().map(PriceDto::new).toList();
-        }
+        return priceService.getListByDate(date);
     }
 }

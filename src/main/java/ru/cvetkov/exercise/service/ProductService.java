@@ -5,7 +5,7 @@ import ru.cvetkov.exercise.models.PriceDto;
 
 public interface ProductService {
 
-    PriceDto getById(long id) throws ChangeSetPersister.NotFoundException;
+    PriceDto getById(long id);
 
     Long getCount();
 

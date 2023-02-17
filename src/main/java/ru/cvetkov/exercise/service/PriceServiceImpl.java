@@ -3,10 +3,7 @@ package ru.cvetkov.exercise.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.cvetkov.exercise.models.GeneralProductPriceStatistic;
-import ru.cvetkov.exercise.models.StatisticGroupByDate;
-import ru.cvetkov.exercise.models.Price;
-import ru.cvetkov.exercise.models.StatisticGroupByProduct;
+import ru.cvetkov.exercise.models.*;
 import ru.cvetkov.exercise.repository.PriceDao;
 
 import java.time.LocalDate;
@@ -26,8 +23,15 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
     }
 
     @Override
-    public List<Price> getListByDate(LocalDate date) {
-        return priceDao.getListByDate(date);
+    public List<PriceDto> getListByDate(LocalDate date) {
+        List<Price> prices = priceDao.getListByDate(date);
+        if (prices.isEmpty()) {
+            log.warn("Список товаров пуст!");
+            return Collections.emptyList();
+        } else {
+            log.info("Размер списка вовзращаемого списка: " + prices.size());
+            return prices.stream().map(PriceDto::new).toList();
+        }
     }
 
     @Override
@@ -54,7 +58,7 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
         List<Object[]> allObjects = priceDao.getDateStatistic();
         int sizeAllObject = allObjects.size();
         if (sizeAllObject != 0) {
-            log.info(String.valueOf(allObjects.size()));
+            log.info("Размер вовзращаемого списка: " + allObjects.size());
             List<StatisticGroupByDate> statisticGroupByDates = new ArrayList<>();
             for (Object[] objects : allObjects) {
                 Date date = (Date) convertToList(objects).get(0);
@@ -69,7 +73,7 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
     }
 
     @Override
-    public GeneralProductPriceStatistic getGeneralStatistic() {
+    public GeneralProductPriceStatistic getGeneralStatistic() throws SbException {
         final ExecutorService executor = Executors.newFixedThreadPool(3);
         GeneralProductPriceStatistic answer = new GeneralProductPriceStatistic();
         try {
@@ -88,10 +92,8 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
             executor.shutdown();
 
         } catch (InterruptedException | TimeoutException | ExecutionException e) {
-            log.warn("Interrupted!", e);
-            Thread.currentThread().interrupt();
+            throw new SbException("Ошибка выполнения getGeneralStatistic");
         }
-
         return answer;
     }
 

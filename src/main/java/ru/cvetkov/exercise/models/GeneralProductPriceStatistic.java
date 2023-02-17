@@ -19,7 +19,6 @@ public class GeneralProductPriceStatistic {
     List<StatisticGroupByDate> statisticGroupByDateList;
 
     public GeneralProductPriceStatistic() {
-        return;
     }
 
     public Long getCount() {

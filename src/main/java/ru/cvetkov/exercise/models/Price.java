@@ -25,7 +25,6 @@ public class Price {
     private Product product;
 
     public Price(){
-        //Do nothing because it's need for create new instance via reflection
     }
 
     public Double getCost() {
