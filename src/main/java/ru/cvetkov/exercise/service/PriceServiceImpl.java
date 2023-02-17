@@ -12,7 +12,7 @@ import java.util.concurrent.*;
 
 @Slf4j
 @Service
-public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceService {
+public class PriceServiceImpl implements PriceService {
 
     PriceDao priceDao;
     @Autowired
@@ -42,8 +42,8 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
             log.info(String.valueOf(allObjects.size()));
             List<StatisticGroupByProduct> statisticGroupByProductList = new ArrayList<>();
             for (Object[] objects : allObjects) {
-                String name = (String) convertToList(objects).get(0);
-                Long frequency = (Long) convertToList(objects).get(1);
+                String name = (String) objects[0];
+                Long frequency = (Long) objects[1];
                 statisticGroupByProductList.add(new StatisticGroupByProduct(name, frequency));
             }
             return statisticGroupByProductList;
@@ -61,8 +61,8 @@ public class PriceServiceImpl extends ConvertToListServiceImpl implements PriceS
             log.info("Размер вовзращаемого списка: " + allObjects.size());
             List<StatisticGroupByDate> statisticGroupByDates = new ArrayList<>();
             for (Object[] objects : allObjects) {
-                Date date = (Date) convertToList(objects).get(0);
-                Long frequency = (Long) convertToList(objects).get(1);
+                Date date = (Date) objects[0];
+                Long frequency = (Long) objects[1];
                 statisticGroupByDates.add(new StatisticGroupByDate(date, frequency));
             }
             return statisticGroupByDates;
