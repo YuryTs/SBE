@@ -1,7 +1,9 @@
 package ru.cvetkov.exercise.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Service;
 import ru.cvetkov.exercise.models.*;
 import ru.cvetkov.exercise.repository.PriceDao;
@@ -40,40 +42,38 @@ public class PriceServiceImpl implements PriceService {
     @Override
     public List<StatisticGroupByProduct> getCountPriceProduct() {
         List<Object[]> allObjects = priceDao.getCountPriceProduct();
-        int sizeAllObject = allObjects.size();
-        if (sizeAllObject != 0) {
-            log.info("Количество товаров: " + allObjects.size());
-            return
-            allObjects.stream()
-                    .map(objects-> {
-                                String name = (String) objects[0];
-                                Long frequency = (Long) objects[1];
-                                return new StatisticGroupByProduct(name, frequency);
-                            }
-                            ).toList();
-        } else {
+        if (allObjects.isEmpty()) {
             log.warn("Список товаров пуст!");
             return Collections.emptyList();
+        } else {
+            log.info("Количество товаров: " + allObjects.size());
+            return
+                    allObjects.stream()
+                            .map(objects-> {
+                                        String name = (String) objects[0];
+                                        Long frequency = (Long) objects[1];
+                                        return new StatisticGroupByProduct(name, frequency);
+                                    }
+                            ).toList();
         }
     }
 
     @Override
     public List<StatisticGroupByDate> getDateStatistic() {
         List<Object[]> allObjects = priceDao.getDateStatistic();
-        int sizeAllObject = allObjects.size();
-        if (sizeAllObject != 0) {
+        if (allObjects.isEmpty()) {
+            log.warn("Список товаров пуст!");
+            return Collections.emptyList();
+        } else {
             log.info("Размер вовзращаемого списка: " + allObjects.size());
             return
                     allObjects.stream()
-                            .map(objects-> {
+                            .map(objects -> {
                                         Date date = (Date) objects[0];
                                         Long frequency = (Long) objects[1];
                                         return new StatisticGroupByDate(date, frequency);
                                     }
                             ).toList();
-        } else {
-            log.warn("Список товаров пуст!");
-            return Collections.emptyList();
         }
     }
 
