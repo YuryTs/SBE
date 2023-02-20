@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
-
 @Entity
 @Table(name = "prices")
 public class Price {
@@ -15,7 +14,7 @@ public class Price {
     private Long id;
 
     @Column(name = "price")
-    private Double price;
+    private Double cost;
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "date")
@@ -25,10 +24,11 @@ public class Price {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    public Price(){}
+    public Price(){
+    }
 
-    public Double getPrice() {
-        return this.price;
+    public Double getCost() {
+        return this.cost;
     }
 
     public Product getProduct() {
@@ -51,8 +51,8 @@ public class Price {
         this.id = id;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setCost(Double price) {
+        this.cost = price;
     }
 
     public void setDate(LocalDate date) {

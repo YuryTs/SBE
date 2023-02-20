@@ -1,19 +1,18 @@
 package ru.cvetkov.exercise.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import ru.cvetkov.exercise.models.Price;
-import ru.cvetkov.exercise.models.Statistic;
+import ru.cvetkov.exercise.models.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface PriceService {
-    List<Price> getAll();
 
-    List<Price> getListByDate(LocalDate date);
+    List<PriceDto> getListByDate(LocalDate date);
 
-    List<Statistic> getCountPriceProduct();
+    List<StatisticGroupByProduct> getCountPriceProduct();
 
-    String getStatistic() throws JsonProcessingException;
+    List<StatisticGroupByDate> getDateStatistic();
+
+    GeneralProductPriceStatistic getGeneralStatistic() throws SbException;
 
 }

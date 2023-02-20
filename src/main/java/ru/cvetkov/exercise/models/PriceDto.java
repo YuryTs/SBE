@@ -16,7 +16,7 @@ public class PriceDto {
 
     public PriceDto(Price price){
         this.name = price.getProduct().getName();
-        this.price = price.getPrice();
+        this.price = price.getCost();
     }
 }
 
