@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 @Slf4j
+@EnableAspectJAutoProxy
 @Service
 public class PriceServiceImpl implements PriceService {
 
@@ -34,7 +35,7 @@ public class PriceServiceImpl implements PriceService {
             log.warn("Список товаров пуст!");
             return Collections.emptyList();
         } else {
-            log.info("Размер списка вовзращаемого списка: " + prices.size());
+            log.info("Размер списка возвращаемого списка: " + prices.size());
             return prices.stream().map(PriceDto::new).toList();
         }
     }
@@ -65,7 +66,7 @@ public class PriceServiceImpl implements PriceService {
             log.warn("Список товаров пуст!");
             return Collections.emptyList();
         } else {
-            log.info("Размер вовзращаемого списка: " + allObjects.size());
+            log.info("Размер возвращаемого списка: " + allObjects.size());
             return
                     allObjects.stream()
                             .map(objects -> {
@@ -100,5 +101,14 @@ public class PriceServiceImpl implements PriceService {
             throw new SbException("Ошибка выполнения getGeneralStatistic");
         }
         return answer;
+    }
+
+    public GeneralProductPriceStatistic getStatisticSingleThread() {
+
+        Long count = productService.getCount();
+        List<StatisticGroupByProduct> statistics = this.getCountPriceProduct();
+        List<StatisticGroupByDate> dayStatistics = this.getDateStatistic();
+        GeneralProductPriceStatistic agreg = new GeneralProductPriceStatistic(count, statistics, dayStatistics);
+        return agreg;
     }
 }

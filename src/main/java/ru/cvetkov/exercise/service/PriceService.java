@@ -15,4 +15,7 @@ public interface PriceService {
 
     GeneralProductPriceStatistic getGeneralStatistic() throws SbException;
 
+    GeneralProductPriceStatistic getStatisticSingleThread();
+
+
 }

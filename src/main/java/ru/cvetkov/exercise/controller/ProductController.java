@@ -2,8 +2,10 @@ package ru.cvetkov.exercise.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.ObjectNotFoundException;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+import ru.cvetkov.exercise.aspects.Loggable;
 import ru.cvetkov.exercise.models.*;
 import ru.cvetkov.exercise.service.PriceService;
 import ru.cvetkov.exercise.service.ProductService;
@@ -30,9 +32,16 @@ public class ProductController {
         return productService.getById(id);
     }
 
+    @Loggable
     @GetMapping(value = "/statistic")
     public GeneralProductPriceStatistic getStatistic() throws SbException {
         return priceService.getGeneralStatistic();
+    }
+
+    @Loggable
+    @GetMapping(value = "/statistic1")
+    public GeneralProductPriceStatistic getStatisticSingleThread() throws SbException {
+        return priceService.getStatisticSingleThread();
     }
 
     @GetMapping
