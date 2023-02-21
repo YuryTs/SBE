@@ -30,9 +30,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PriceDto getById(long id) throws ObjectNotFoundException {
-        Optional<Product> product = Optional.of(productDAO.findById(id).orElse(new Product()));
-        List<Price> pricesList = product.get().getPrices();
-        if (pricesList.isEmpty()) {
+        Product product = productDAO.findById(id).orElse(new Product());
+        List<Price> pricesList = product.getPrices();
+        if (pricesList == null) {
             log.error("Товара с id = " + id + " не существует");
             return null;
         } else {

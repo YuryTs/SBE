@@ -1,7 +1,9 @@
 package ru.cvetkov.exercise.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Service;
 import ru.cvetkov.exercise.models.*;
 import ru.cvetkov.exercise.repository.PriceDao;
@@ -10,6 +12,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 @Slf4j
+@EnableAspectJAutoProxy
 @Service
 public class PriceServiceImpl implements PriceService {
 
@@ -32,7 +35,7 @@ public class PriceServiceImpl implements PriceService {
             log.warn("Список товаров пуст!");
             return Collections.emptyList();
         } else {
-            log.info("Размер списка вовзращаемого списка: " + prices.size());
+            log.info("Размер списка возвращаемого списка: " + prices.size());
             return prices.stream().map(PriceDto::new).toList();
         }
     }
@@ -40,40 +43,38 @@ public class PriceServiceImpl implements PriceService {
     @Override
     public List<StatisticGroupByProduct> getCountPriceProduct() {
         List<Object[]> allObjects = priceDao.getCountPriceProduct();
-        int sizeAllObject = allObjects.size();
-        if (sizeAllObject != 0) {
-            log.info("Количество товаров: " + allObjects.size());
-            return
-            allObjects.stream()
-                    .map(objects-> {
-                                String name = (String) objects[0];
-                                Long frequency = (Long) objects[1];
-                                return new StatisticGroupByProduct(name, frequency);
-                            }
-                            ).toList();
-        } else {
+        if (allObjects.isEmpty()) {
             log.warn("Список товаров пуст!");
             return Collections.emptyList();
+        } else {
+            log.info("Количество товаров: " + allObjects.size());
+            return
+                    allObjects.stream()
+                            .map(objects-> {
+                                        String name = (String) objects[0];
+                                        Long frequency = (Long) objects[1];
+                                        return new StatisticGroupByProduct(name, frequency);
+                                    }
+                            ).toList();
         }
     }
 
     @Override
     public List<StatisticGroupByDate> getDateStatistic() {
         List<Object[]> allObjects = priceDao.getDateStatistic();
-        int sizeAllObject = allObjects.size();
-        if (sizeAllObject != 0) {
-            log.info("Размер вовзращаемого списка: " + allObjects.size());
+        if (allObjects.isEmpty()) {
+            log.warn("Список товаров пуст!");
+            return Collections.emptyList();
+        } else {
+            log.info("Размер возвращаемого списка: " + allObjects.size());
             return
                     allObjects.stream()
-                            .map(objects-> {
+                            .map(objects -> {
                                         Date date = (Date) objects[0];
                                         Long frequency = (Long) objects[1];
                                         return new StatisticGroupByDate(date, frequency);
                                     }
                             ).toList();
-        } else {
-            log.warn("Список товаров пуст!");
-            return Collections.emptyList();
         }
     }
 
@@ -100,5 +101,14 @@ public class PriceServiceImpl implements PriceService {
             throw new SbException("Ошибка выполнения getGeneralStatistic");
         }
         return answer;
+    }
+
+    public GeneralProductPriceStatistic getStatisticSingleThread() {
+
+        Long count = productService.getCount();
+        List<StatisticGroupByProduct> statistics = this.getCountPriceProduct();
+        List<StatisticGroupByDate> dayStatistics = this.getDateStatistic();
+        GeneralProductPriceStatistic agreg = new GeneralProductPriceStatistic(count, statistics, dayStatistics);
+        return agreg;
     }
 }
