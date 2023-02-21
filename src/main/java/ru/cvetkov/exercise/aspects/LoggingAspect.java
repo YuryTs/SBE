@@ -6,8 +6,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -21,12 +21,12 @@ public class LoggingAspect {
 
     @Around("someMethodAdvice()")
     public Object measureMethodExecutionTime(ProceedingJoinPoint pjp) throws Throwable{
-        long start = System.nanoTime();
+        long start = System.currentTimeMillis();
         Object retval = pjp.proceed();
-        long end = System.nanoTime();
+        long end = System.currentTimeMillis();
         String methodName = pjp.getSignature().getName();
         log.info("Выполнение метода " + methodName + " занимает " +
-                TimeUnit.MILLISECONDS.toMillis(end-start) + " милисек.");
+                (end-start) + " милисек.");
         return retval;
     }
 }
