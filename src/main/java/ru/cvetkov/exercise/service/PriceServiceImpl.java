@@ -1,7 +1,7 @@
 package ru.cvetkov.exercise.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Service;
@@ -10,12 +10,12 @@ import ru.cvetkov.exercise.repository.PriceDao;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
-@Slf4j
 @EnableAspectJAutoProxy
 @Service
 public class PriceServiceImpl implements PriceService {
+
+    final Logger logger = LoggerFactory.getLogger(getClass());
 
     PriceDao priceDao;
     ProductService productService;
@@ -33,10 +33,10 @@ public class PriceServiceImpl implements PriceService {
     public List<PriceDto> getListByDate(LocalDate date) {
         List<Price> prices = priceDao.getListByDate(date);
         if (prices.isEmpty()) {
-            log.warn("Список товаров пуст!");
+            logger.warn("Список товаров пуст!");
             return Collections.emptyList();
         } else {
-            log.info("Размер списка возвращаемого списка: " + prices.size());
+            logger.info("Размер списка возвращаемого списка: " + prices.size());
             return prices.stream().map(PriceDto::new).toList();
         }
     }
@@ -45,10 +45,10 @@ public class PriceServiceImpl implements PriceService {
     public List<StatisticGroupByProduct> getCountPriceProduct() {
         List<Object[]> allObjects = priceDao.getCountPriceProduct();
         if (allObjects.isEmpty()) {
-            log.warn("Список товаров пуст!");
+            logger.warn("Список товаров пуст!");
             return Collections.emptyList();
         } else {
-            log.info("Количество товаров: " + allObjects.size());
+            logger.info("Количество товаров: " + allObjects.size());
             return
                     allObjects.stream()
                             .map(objects-> {
@@ -64,10 +64,10 @@ public class PriceServiceImpl implements PriceService {
     public List<StatisticGroupByDate> getDateStatistic() {
         List<Object[]> allObjects = priceDao.getDateStatistic();
         if (allObjects.isEmpty()) {
-            log.warn("Список товаров пуст!");
+            logger.warn("Список товаров пуст!");
             return Collections.emptyList();
         } else {
-            log.info("Размер возвращаемого списка: " + allObjects.size());
+            logger.info("Размер возвращаемого списка: " + allObjects.size());
             return
                     allObjects.stream()
                             .map(objects -> {
