@@ -6,21 +6,23 @@
         </encoder>
     </appender>
 
+    <property name="LOG_PATH" value="/home/cvetkov/IdeaProjects/SBE/LOGs" />
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>slf4jlogbacke.log</file>
+        <file>${LOG_PATH}/sbe.log</file>
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>slf4jlogback.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>sbeLog.%d{yyyy-MM-dd_HH}.log</fileNamePattern>
+            <maxHistory>2</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>%d{dd.MM.yyyy HH:mm:ss.SSS} [%thread] %-5level  - %msg%n</pattern>
         </encoder>
     </appender>
 
-
     <root level="debug">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </root>
 </configuration>
+

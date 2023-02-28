@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StopWatch;
+import com.google.common.base.Stopwatch;
 
 
 @Slf4j
@@ -21,15 +21,10 @@ public class LoggingAspect {
 
     @Around("someMethodAdvice()")
     public Object measureMethodExecutionTime(ProceedingJoinPoint pjp) throws Throwable{
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-//        long start = System.currentTimeMillis();
+        Stopwatch stopwatch = Stopwatch.createStarted();
         Object retval = pjp.proceed();
-//        long end = System.currentTimeMillis();
-        stopWatch.stop();
         String methodName = pjp.getSignature().getName();
-        log.info("Выполнение метода " + methodName + " занимает " +
-                (stopWatch) + " милисек.");
+        log.info("Выполнение метода {} занимает {} милисек.", methodName, stopwatch.stop());
         return retval;
     }
 }

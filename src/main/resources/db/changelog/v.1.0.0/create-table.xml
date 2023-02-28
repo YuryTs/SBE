@@ -6,7 +6,7 @@
 
     <changeSet id="create-table-products" author="cvetkov">
         <createTable tableName="products">
-            <column name="id" type="int" autoIncrement="true">
+            <column name="id" type="bigserial" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="name" type="varchar(100)"/>
@@ -14,24 +14,24 @@
     </changeSet>
     <changeSet id="create-table-prices" author="cvetkov">
         <createTable tableName="prices">
-            <column name="id" type="BIGSERIAL" autoIncrement="true">
+            <column name="id" type="bigserial" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="price" type="decimal"/>
+            <column name="price" type="decimal(12, 2)"/>
             <column name="date" type="date"/>
-            <column name="product_id" type="BIGSERIAL">
+            <column name="product_id" type="bigserial">
                 <constraints foreignKeyName="prices_product_id_products_id" references="products(id)"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="add-new-column-provider" author="cvetkov">
-        <addColumn tableName="prices">
-            <column name="provider" type="varchar(100)"></column>
-        </addColumn>
-        <rollback>
-            <dropColumn tableName="prices" columnName="provider"/>
-        </rollback>
-    </changeSet>
+<!--    <changeSet id="add-new-column-provider" author="cvetkov">-->
+<!--        <addColumn tableName="prices">-->
+<!--            <column name="provider" type="varchar(100)"></column>-->
+<!--        </addColumn>-->
+<!--        <rollback>-->
+<!--            <dropColumn tableName="prices" columnName="provider"/>-->
+<!--        </rollback>-->
+<!--    </changeSet>-->
 
 
 </databaseChangeLog>

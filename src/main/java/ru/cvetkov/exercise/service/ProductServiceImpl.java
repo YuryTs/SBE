@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productDAO.findById(id).orElse(new Product());
         List<Price> pricesList = product.getPrices();
         if (pricesList == null) {
-            logger.error("Товара с id = " + id + " не существует");
+            logger.error("Товара с id = {} не существует", id);
             return null;
         } else {
             pricesList.sort(Comparator.comparing(Price::getDate));
