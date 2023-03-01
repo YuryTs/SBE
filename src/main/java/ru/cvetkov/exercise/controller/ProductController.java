@@ -2,9 +2,6 @@ package ru.cvetkov.exercise.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.ObjectNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.cvetkov.exercise.aspects.Loggable;
@@ -20,8 +17,8 @@ import java.util.*;
 @Slf4j
 public class ProductController {
 
-    ProductService productService;
-    PriceService priceService;
+    private final ProductService productService;
+    private final PriceService priceService;
 
     public ProductController(ProductService productService, PriceService priceService) {
         this.productService = productService;

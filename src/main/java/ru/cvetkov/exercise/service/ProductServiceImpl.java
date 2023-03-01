@@ -15,6 +15,7 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
     private ProductDao productDAO;
 
     @Autowired

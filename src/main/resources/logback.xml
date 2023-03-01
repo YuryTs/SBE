@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <property name="LOG_PATH" value="/home/cvetkov/var/log/SBE" />
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{dd.MM.yyyy HH:mm:ss.SSS} [%thread] %-5level %cyan(%class{50}.%M:%L) - %msg%n</pattern>
         </encoder>
     </appender>
-
-    <property name="LOG_PATH" value="/home/cvetkov/IdeaProjects/SBE/LOGs" />
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/sbe.log</file>
