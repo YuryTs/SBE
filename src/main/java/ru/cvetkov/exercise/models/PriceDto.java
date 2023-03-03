@@ -28,9 +28,5 @@ public class PriceDto {
         return Objects.equals(name, priceDto.name) && Objects.equals(price, priceDto.price);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, price);
-    }
 }
 

@@ -3,6 +3,8 @@ package ru.cvetkov.exercise.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.util.Objects;
+
 @Data
 public class StatisticGroupByProduct {
 
@@ -43,4 +45,12 @@ public class StatisticGroupByProduct {
                 ", frequency=" + frequency +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof StatisticGroupByProduct that)) return false;
+        return Objects.equals(name, that.name) && Objects.equals(frequency, that.frequency);
+    }
+
 }

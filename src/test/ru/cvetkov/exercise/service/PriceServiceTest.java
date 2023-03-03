@@ -95,7 +95,7 @@ class PriceServiceTest {
         List<StatisticGroupByDate> groupByDateList = priceServiceImpl.getDateStatistic();
         GeneralProductPriceStatistic generalStatistic = new GeneralProductPriceStatistic(count, groupByProducts, groupByDateList);
 
-        assertEquals(generalStatistic.toString(), (priceServiceImpl.getStatisticSingleThread()).toString());
+        assertEquals(generalStatistic, (priceServiceImpl.getStatisticSingleThread()));
     }
     private static Product getProduct(){
     Product product = new Product(1l, "nokia3310");
