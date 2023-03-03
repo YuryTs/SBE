@@ -39,4 +39,5 @@ public class StatisticGroupByDate {
                 ", frequency=" + frequency +
                 '}';
     }
+
 }

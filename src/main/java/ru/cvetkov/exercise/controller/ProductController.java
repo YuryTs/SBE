@@ -39,7 +39,7 @@ public class ProductController {
 
     @Loggable
     @GetMapping(value = "/singletread")
-    public GeneralProductPriceStatistic getStatisticSingleThread() throws SbException {
+    public GeneralProductPriceStatistic getStatisticSingleThread() {
         return priceService.getStatisticSingleThread();
     }
 

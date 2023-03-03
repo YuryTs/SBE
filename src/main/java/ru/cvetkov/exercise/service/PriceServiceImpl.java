@@ -109,7 +109,6 @@ public class PriceServiceImpl implements PriceService {
         Long count = productService.getCount();
         List<StatisticGroupByProduct> statistics = this.getCountPriceProduct();
         List<StatisticGroupByDate> dayStatistics = this.getDateStatistic();
-        GeneralProductPriceStatistic agreg = new GeneralProductPriceStatistic(count, statistics, dayStatistics);
-        return agreg;
+        return new GeneralProductPriceStatistic(count, statistics, dayStatistics);
     }
 }
