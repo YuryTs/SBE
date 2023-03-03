@@ -5,4 +5,5 @@ public class SbException extends Exception {
     public SbException(String massage) {
         super(massage);
     }
+
 }

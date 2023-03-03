@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.cvetkov.exercise.models.Price;
 import ru.cvetkov.exercise.models.PriceDto;
 import ru.cvetkov.exercise.models.Product;
+import ru.cvetkov.exercise.models.SbException;
 import ru.cvetkov.exercise.repository.ProductDao;
 
 import java.time.LocalDate;
@@ -16,11 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class ProductServiceImplTest {
+class ProductServiceTest {
     @InjectMocks
     private ProductServiceImpl productServiceImpl;
     @Mock
@@ -34,7 +33,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void getByIdTest() {
+    void getByIdTest() throws SbException {
         Product product = new Product(1l, "nokia3310");
         Price price = new Price();
         price.setProduct(product);
@@ -44,12 +43,23 @@ class ProductServiceImplTest {
         List<Price> prices = new ArrayList<>();
         prices.add(price);
         product.setPrices(prices);
-        PriceDto dtoExcpected = new PriceDto(product.getName(), price.getCost());
+        PriceDto dtoExpected = new PriceDto(product.getName(), price.getCost());
         Optional<Product> productOptional = Optional.of(product);
 
         when(productDao.findById(1l)).thenReturn(productOptional);
         PriceDto priceDto = productServiceImpl.getById(1);
 
-        Assertions.assertEquals(dtoExcpected, priceDto);
+        Assertions.assertEquals(dtoExpected, priceDto);
     }
+
+    @Test
+    void getByIdExpectedExceptionTest() {
+        long id = 6l;
+        SbException thrown = Assertions.assertThrows(SbException.class, () ->{
+        productServiceImpl.getById(id);
+        });
+        SbException exception = new SbException("Товара с id=" + id +" не существует");
+        Assertions.assertEquals(exception.getMessage(), thrown.getMessage());
+    }
+
 }

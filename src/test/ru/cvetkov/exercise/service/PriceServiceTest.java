@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
-class PriceServiceImplTest {
+class PriceServiceTest {
     @InjectMocks
     private PriceServiceImpl priceServiceImpl;
     @Mock
@@ -31,14 +31,14 @@ class PriceServiceImplTest {
     void getListByDateTest() {
 
         Price price = new Price();
-        price.setProduct(PriceServiceImplTest.getProduct());
+        price.setProduct(PriceServiceTest.getProduct());
         price.setId(1l);
         price.setDate(LocalDate.parse("2021-09-19"));
         price.setCost(2900d);
 
         List<Price> prices = new ArrayList<>();
         prices.add(price);
-        PriceDto dtoExpected = new PriceDto(PriceServiceImplTest.getProduct().getName(), price.getCost());
+        PriceDto dtoExpected = new PriceDto(PriceServiceTest.getProduct().getName(), price.getCost());
 
         when(priceDao.getListByDate(LocalDate.now())).thenReturn(prices);
         List<PriceDto> priceDtoList = priceServiceImpl.getListByDate(LocalDate.now());
@@ -50,7 +50,7 @@ class PriceServiceImplTest {
     @Test
     void getCountPriceProductTest() {
 
-        when(priceDao.getCountPriceProduct()).thenReturn(PriceServiceImplTest.getListProduct());
+        when(priceDao.getCountPriceProduct()).thenReturn(PriceServiceTest.getListProduct());
         List<StatisticGroupByProduct> statisticGroupByProductList = priceServiceImpl.getCountPriceProduct();
 
         assertEquals("nokia3310", statisticGroupByProductList.get(0).getName());
@@ -61,7 +61,7 @@ class PriceServiceImplTest {
     @Test
     void getDateStatisticTest() throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        when(priceDao.getDateStatistic()).thenReturn(PriceServiceImplTest.getListDate());
+        when(priceDao.getDateStatistic()).thenReturn(PriceServiceTest.getListDate());
 
         List<StatisticGroupByDate> statisticGroupByDates = priceServiceImpl.getDateStatistic();
         Date date1 = statisticGroupByDates.get(0).getDate();
@@ -76,9 +76,9 @@ class PriceServiceImplTest {
     void getGeneralStatistic() throws SbException, ParseException {
         Long count = 5l;
         when(productServiceImpl.getCount()).thenReturn(count);
-        when(priceDao.getCountPriceProduct()).thenReturn(PriceServiceImplTest.getListProduct());
+        when(priceDao.getCountPriceProduct()).thenReturn(PriceServiceTest.getListProduct());
         List<StatisticGroupByProduct> groupByProducts = priceServiceImpl.getCountPriceProduct();
-        when(priceDao.getDateStatistic()).thenReturn(PriceServiceImplTest.getListDate());
+        when(priceDao.getDateStatistic()).thenReturn(PriceServiceTest.getListDate());
         List<StatisticGroupByDate> groupByDateList = priceServiceImpl.getDateStatistic();
         GeneralProductPriceStatistic generalStatistic = new GeneralProductPriceStatistic(count, groupByProducts, groupByDateList);
 
@@ -89,26 +89,25 @@ class PriceServiceImplTest {
     void getStatisticSingleThreadTread() throws ParseException {
         Long count = 5l;
         when(productServiceImpl.getCount()).thenReturn(count);
-        when(priceDao.getCountPriceProduct()).thenReturn(PriceServiceImplTest.getListProduct());
+        when(priceDao.getCountPriceProduct()).thenReturn(PriceServiceTest.getListProduct());
         List<StatisticGroupByProduct> groupByProducts = priceServiceImpl.getCountPriceProduct();
-        when(priceDao.getDateStatistic()).thenReturn(PriceServiceImplTest.getListDate());
+        when(priceDao.getDateStatistic()).thenReturn(PriceServiceTest.getListDate());
         List<StatisticGroupByDate> groupByDateList = priceServiceImpl.getDateStatistic();
         GeneralProductPriceStatistic generalStatistic = new GeneralProductPriceStatistic(count, groupByProducts, groupByDateList);
 
         assertEquals(generalStatistic.toString(), (priceServiceImpl.getStatisticSingleThread()).toString());
     }
-static private Product getProduct(){
+    private static Product getProduct(){
     Product product = new Product(1l, "nokia3310");
     return product;
 }
-
-    static private List<Object[]> getListProduct(){
+    private static List<Object[]> getListProduct(){
         List<Object[]> list = new ArrayList<>();
         Object[] objects = {"nokia3310", 2l};
         list.add(objects);
         return list;
     }
-    static private List<Object[]> getListDate() throws ParseException {
+    private static List<Object[]> getListDate() throws ParseException {
         List<Object[]> list = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date = format.parse("2023-01-09");
