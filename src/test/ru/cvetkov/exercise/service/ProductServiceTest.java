@@ -1,6 +1,5 @@
 package ru.cvetkov.exercise.service;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -29,7 +30,7 @@ class ProductServiceTest {
     void getCountTest() {
         when(productDao.count()).thenReturn(3l);
         Long count = productServiceImpl.getCount();
-        Assertions.assertEquals(3l, count);
+        assertEquals(3l, count);
     }
 
     @Test
@@ -49,17 +50,18 @@ class ProductServiceTest {
         when(productDao.findById(1l)).thenReturn(productOptional);
         PriceDto priceDto = productServiceImpl.getById(1);
 
-        Assertions.assertEquals(dtoExpected, priceDto);
+        assertEquals(dtoExpected, priceDto);
     }
 
     @Test
     void getByIdExpectedExceptionTest() {
-        long id = 6l;
-        SbException thrown = Assertions.assertThrows(SbException.class, () ->{
-        productServiceImpl.getById(id);
-        });
-        SbException exception = new SbException("Товара с id=" + id +" не существует");
-        Assertions.assertEquals(exception.getMessage(), thrown.getMessage());
-    }
+        long id = 2l;
 
+        SbException thrown = assertThrows(SbException.class, () -> {
+            when(productDao.findById(id)).thenReturn(Optional.empty());
+            productServiceImpl.getById(id);
+        });
+        SbException exception = new SbException("Товара с id=" + id + " не существует");
+        assertEquals(exception.getMessage(), thrown.getMessage());
+    }
 }

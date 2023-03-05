@@ -1,9 +1,11 @@
 package ru.cvetkov.exercise.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
 import static org.mockito.Mockito.*;
 
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +26,7 @@ class PriceServiceTest {
     @Mock
     PriceDao priceDao;
     @Mock
-    ProductServiceImpl productServiceImpl;
+    ProductService productServiceImpl;
 
 
     @Test
@@ -97,16 +99,19 @@ class PriceServiceTest {
 
         assertEquals(generalStatistic, (priceServiceImpl.getStatisticSingleThread()));
     }
-    private static Product getProduct(){
-    Product product = new Product(1l, "nokia3310");
-    return product;
-}
-    private static List<Object[]> getListProduct(){
+
+    private static Product getProduct() {
+        Product product = new Product(1l, "nokia3310");
+        return product;
+    }
+
+    private static List<Object[]> getListProduct() {
         List<Object[]> list = new ArrayList<>();
         Object[] objects = {"nokia3310", 2l};
         list.add(objects);
         return list;
     }
+
     private static List<Object[]> getListDate() throws ParseException {
         List<Object[]> list = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");

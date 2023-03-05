@@ -32,16 +32,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PriceDto getById(long id) throws SbException {
-        try {
-            Product product = productDAO.findById(id).orElse(new Product());
-            List<Price> pricesList = product.getPrices();
+        Product product = productDAO.findById(id).orElse(new Product());
+        List<Price> pricesList = product.getPrices();
+        if (pricesList == null) {
+            logger.error("Товара с id = {} не существует", id);
+            throw new SbException("Товара с id=" + id + " не существует");
+        } else {
             pricesList.sort(Comparator.comparing(Price::getDate));
             Price price = pricesList.get(pricesList.size() - 1);
             return new PriceDto(price);
-
-        }
-        catch (Exception e){
-            throw new SbException("Товара с id="+ id +" не существует");
 
         }
     }
