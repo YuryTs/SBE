@@ -1,6 +1,5 @@
 package ru.cvetkov.exercise.service;
 
-import org.hibernate.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
