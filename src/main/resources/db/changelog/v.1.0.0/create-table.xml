@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-table-products" author="cvetkov">
+        <createTable tableName="products">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="create-table-prices" author="cvetkov">
+        <createTable tableName="prices">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="price" type="decimal(12, 2)"/>
+            <column name="date" type="date"/>
+            <column name="product_id" type="bigserial">
+                <constraints foreignKeyName="prices_product_id_products_id" references="products(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+<!--    <changeSet id="add-new-column-provider" author="cvetkov">-->
+<!--        <addColumn tableName="prices">-->
+<!--            <column name="provider" type="varchar(100)"></column>-->
+<!--        </addColumn>-->
+<!--        <rollback>-->
+<!--            <dropColumn tableName="prices" columnName="provider"/>-->
+<!--        </rollback>-->
+<!--    </changeSet>-->
+
+
+</databaseChangeLog>

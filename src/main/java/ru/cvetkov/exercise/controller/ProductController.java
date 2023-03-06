@@ -2,7 +2,6 @@ package ru.cvetkov.exercise.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.ObjectNotFoundException;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.cvetkov.exercise.aspects.Loggable;
@@ -18,8 +17,8 @@ import java.util.*;
 @Slf4j
 public class ProductController {
 
-    ProductService productService;
-    PriceService priceService;
+    private final ProductService productService;
+    private final PriceService priceService;
 
     public ProductController(ProductService productService, PriceService priceService) {
         this.productService = productService;
@@ -28,7 +27,7 @@ public class ProductController {
 
 
     @GetMapping(value = "/{id}")
-    public PriceDto getProductById(@PathVariable(name = "id") long id) throws ObjectNotFoundException {
+    public PriceDto getProductById(@PathVariable(name = "id") long id) throws ObjectNotFoundException, SbException {
         return productService.getById(id);
     }
 
@@ -40,7 +39,7 @@ public class ProductController {
 
     @Loggable
     @GetMapping(value = "/singletread")
-    public GeneralProductPriceStatistic getStatisticSingleThread() throws SbException {
+    public GeneralProductPriceStatistic getStatisticSingleThread() {
         return priceService.getStatisticSingleThread();
     }
 

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import java.util.List;
+import java.util.Objects;
 
 @Builder
 @AllArgsConstructor
@@ -53,4 +54,12 @@ public class GeneralProductPriceStatistic {
                 ", statisticGroupByDateList=" + statisticGroupByDateList +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GeneralProductPriceStatistic that)) return false;
+        return Objects.equals(count, that.count) && Objects.equals(statisticGroupByProductList, that.statisticGroupByProductList) && Objects.equals(statisticGroupByDateList, that.statisticGroupByDateList);
+    }
+
 }
